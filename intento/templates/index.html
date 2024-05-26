@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Problema del Flujo Máximo</title>
+    
+    <link rel="stylesheet" href="/static/styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://kit.fontawesome.com/c13904b08e.js" crossorigin="anonymous"></script>
+
+    
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark  fixed-top">
+            <a class="navbar-brand" href="#">Problema del flujo máximo</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#definicion">Definición</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#conocimientos">Conocimientos Previos</a>
+                    </li>
+                   
+                    <li class="nav-item">
+                        <a class="nav-link" href="#aplicaciones">Aplicaciones</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+            <div class="content">
+                <div class="lema">
+                    <h2>"Optimiza tu camino hacia la eficiencia: Desbloquea el flujo máximo "</h2>
+                </div>
+                <div class="boton">
+                    <a href="/login" class="btn" >Iniciar</a>
+                </div>
+            </div>
+        
+    </header>
+
+    <div class="definicion">
+        <section id="definicion" >
+        <div class="cuadro">
+                
+                 
+                
+            <div class="texto-def">
+                <h2 style="  color: rgb(82, 7, 82); ">Definición</h2>
+                 <br>
+                <h2>Flujo Máximo</h2>
+                <p>Consiste en encontrar la distribución óptima de flujo a través de una red de conexiones con capacidades limitadas, para maximizar la cantidad total de flujo que puede pasar desde una fuente hasta un destino dado.</p>
+                <p>En el problema del flujo máximo, se parte de una red dirigida en la que los nodos representan ubicaciones o puntos de procesamiento, y las aristas representan las rutas por las que el flujo puede circular y tienen una capacidad máxima que limita la cantidad de flujo que puede pasar a través de ella.</p>
+                <h2>Algoritmo de Ford Fulkerson</h2>
+                <p>El algoritmo de Ford-Fulkerson es una técnica fundamental en la teoría de grafos utilizada para abordar problemas de flujo máximo en redes. Este algoritmo, concebido por Lester Ford y Delbert Fulkerson en 1956, se encuentra en el núcleo de diversas aplicaciones.</p>
+                <p>El propósito central del algoritmo Ford-Fulkerson es determinar el valor máximo de flujo (Fmax) que puede ser enviado desde un nodo fuente (s) hasta un nodo destino (t) a lo largo de una red de conexiones, donde cada arco (u, v) posee una capacidad no negativa, representada por c(u, v), que indica la cantidad máxima de flujo que puede atravesar dicho arco sin infringir sus restricciones.</p>
+            </div>
+            <div class="fordfulk">
+                <div style="text-align: center;">
+                    <img src="static/assets/images/ford.jpg" alt="Imagen Ford" style="width: 190px; height: auto;">
+                    <p>Lester Ford</p>
+                </div>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <img src="static/assets/images/fulk.jpg" alt="Imagen Fulkerson" style="width: 190px; height: auto;">
+                    <p>Delbert Fulkerson</p>
+                </div>
+            </div>
+            
+        </div>
+        </section>
+    </div>
+    <div class="conocimientos">
+        <section id="conocimientos">
+            <div class="carrusel">
+                <h2>Conocimientos Previos</h2>
+                <button id="anterior" class="botoncarrusel">Anterior</button>
+                <div class="elemento visible">
+                    <p><strong>Grafo o Red:</strong> Conjunto de varios nodos conectados por aristas que salen de un determinado nodo y van hacia otro, cada una estas aristas pueden presentar o no una dirección y una capacidad de flujo.</p>
+                    <img src="static/assets/images/grafo.png" alt="grafo" style="width: 30%; height: auto;">
+                </div>
+                <div class="elemento">
+                    <p><strong>Nodo:</strong> Los nodos, también conocidos como vértices, son los puntos o entidades individuales en el grafo que pueden representar una ubicación, un proceso , etc. En problemas de flujo máximo, los nodos suelen tener un significado específico como la fuente, el destino o los nodos intermedios.
+                        <br>
+                            -Nodo Fuente o Origen: Todas las aristas del nodo apuntan hacia afuera, es el ingreso del flujo.
+                        <br>
+                            -Nodo Destino o Sumidero: Todas las aristas del nodo apuntan hacia él, es la salida del flujo.
+                        </p>
+                    <img src="static/assets/images/nodo.jpeg" alt="Nodos" style="width: 30%; height: auto;">
+                </div>
+                <div class="elemento">
+                    <p><strong>Aristas:</strong> Las aristas son conexiones entre los nodos en la red. En problemas de flujo máximo, las aristas presentan una capacidad de flujo y una dirección.</p>
+                    <img src="static/assets/images/aristas.png" alt="aristas" style="width: 30%; height: auto;">
+                </div>
+                <div class="elemento">
+                    <p><strong>Dirección:</strong> Las aristas son conexiones entre los nodos en la red. En problemas de flujo máximo, las aristas presentan una capacidad de flujo y una dirección.</p>
+                    <img src="static/assets/images/dirig.gif" alt="aristas" style="width: 30%; height: auto;">
+                </div>
+                <div class="elemento">
+                    <p><strong>Matriz:</strong> Una matriz 𝑨 de orden 𝒎 × 𝒏 consiste en el desarrollo de un arreglo rectangular de 𝒎𝒏 números reales o complejos ordenados horizontalmente en 𝒎 filas y verticalmente en 𝒏 columna.
+                    </p>
+                    <img src="static/assets/images/matriz.png" alt="aristas" style="width: 30%; height: auto;">
+                </div>
+                <div class="elemento">
+                    <p><strong>Matriz Booleana:</strong> Una matriz booleana o binaria 𝐵 de tamaño 𝑚 × 𝑛, es una matriz conformada especialmente por entrada de bits, es decir, que los valores que recibe esta matriz 𝐵 están conformados únicamente por 1 y 0.
+                    </p>
+                    <img src="static/assets/images/bool.png" alt="aristas" style="width: 30%; height: auto;">
+                </div>
+                
+                <button id="siguiente"class="botoncarrusel">Siguiente</button>
+            </div>
+        
+            <script>
+                const elementos = document.querySelectorAll('.elemento');
+                let indiceVisible = 0;
+        
+                function mostrarElemento(indice) {
+                    elementos.forEach((elemento, index) => {
+                        if (index === indice) {
+                            elemento.classList.add('visible');
+                        } else {
+                            elemento.classList.remove('visible');
+                        }
+                    });
+                }
+        
+                document.getElementById('anterior').addEventListener('click', () => {
+                    indiceVisible = (indiceVisible - 1 + elementos.length) % elementos.length;
+                    mostrarElemento(indiceVisible);
+                });
+        
+                document.getElementById('siguiente').addEventListener('click', () => {
+                    indiceVisible = (indiceVisible + 1) % elementos.length;
+                    mostrarElemento(indiceVisible);
+                });
+        
+                mostrarElemento(indiceVisible);
+            </script>
+        </section>
+    </div>
+        
+     
+    <div class="aplicaciones">    
+        <section id="aplicaciones">
+        <div class="cuadro2">
+            <h2>Aplicaciones</h2>
+            <h6>Los problemas de flujo máximo desempeñan un papel fundamental en la teoría de redes y la optimización combinatoria. Estos problemas abordan situaciones en las que se busca encontrar la cantidad máxima que puede pasar a través de una red con restricciones de capacidad en sus conexiones. Desde la optimización de rutas en redes de transporte hasta la asignación eficiente de recursos en procesos industriales, el flujo máximo se aplica en una amplia gama de campos</h4>
+            <div class="items">
+                <div class="viajes">
+                    <i class="fa-solid fa-plane fa-beat fa-2xl" style="color: #9b2274;"></i>
+                    <br>
+                    <h7>Viajes: El problema del flujo máximo se aplica en la planificación de rutas de viajes, como el transporte en autobús, avión, taxi o transporte público.</li>
+                </div>
+                <div class="transmisión_datos">
+                    <i class="fa-solid fa-ethernet fa-beat fa-2xl" style="color: #9b2274;"></i>
+                    <br>
+
+                    <h7>Transmisión de Datos: En las redes de comunicación, la Teoría de Juegos se emplea para optimizar la transmisión de datos, minimizando la congestión y maximizando la eficiencia del ancho de banda.</h7>
+                </div>
+                <div class="rutas">
+                    <i class="fa-solid fa-route fa-beat fa-2xl" style="color: #9b2274;"></i>
+                    <br>
+
+                    <h7>Rutas de Suministro: Se utiliza para optimizar la distribución de recursos en la logística y la cadena de suministro, asegurando entregas eficientes y minimizando costos.</h7>
+                </div>
+                <div class="inventario">
+                    <i class="fa-solid fa-warehouse fa-beat fa-2xl" style="color: #9b2274;" ></i>
+                    <br>
+
+                    <h7>Optimización de Inventarios: Determinar la cantidad y la ubicación óptimas de inventario en una cadena de suministro para garantizar una gestión eficiente de inventarios.</h7>
+                </div> 
+                <div class="hidro">
+                    <i class="fa-solid fa-water fa-beat fa-2xl" style="color: #9b2274;"></i>
+                    <br>
+
+                    <h7>Estudios Hidrológicos: En el estudio del medio ambiente, el problema del flujo máximo se aplica para comprender cómo fluye el agua en ecosistemas acuáticos, como ríos y lagos. Esto es esencial para evaluar la salud y la sostenibilidad ambiental.</h7>
+                </div> 
+                <div class="trafico">
+                    <i class="fa-solid fa-traffic-light fa-beat fa-2xl" style="color: #9b2274;"></i>
+                    <br>
+
+                    <h7>Gestión de Tráfico: En el ámbito de las redes de computadoras, el problema del flujo máximo se aplica para controlar el flujo de datos y garantizar que los recursos de red, como ancho de banda y enrutadores, se utilicen de manera eficiente. Esto minimiza la congestión y optimiza el rendimiento de la red.</h7>
+                </div> 
+            </div>
+            </section>
+        </div>
+    </div>
+</body>
+
+</html>

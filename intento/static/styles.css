@@ -1,0 +1,373 @@
+/* Estilos globales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos para el encabezado */
+header {
+    
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    background-image: url('assets/images/fondo1.jpg'); /* Ruta a la imagen de fondo */
+    background-size: cover; /* Ajusta la imagen al tamaño de la ventana */
+    background-repeat: no-repeat; /* Evita la repetición de la imagen */
+    min-height: 600px;
+}
+
+h1 {
+    font-size: 24px;
+    margin: 0;
+}
+
+.cuadro {
+    
+    width:80%;
+    margin-left:10%;
+    background-color: #fff;
+    padding: 20px;
+    height: 50%;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    display:flex;
+}
+.aplicaciones h2 h6 {
+    margin:10%;
+}
+.cuadro2 {
+    
+    width:80%;
+    margin-left:10%;
+    background-color: #fff;
+    padding: 20px;
+    height: 50%;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    
+}
+
+.aleatorio h2{
+    color: #f5f5f5;
+}
+.aleatorio .cuadro h2{
+    color: #92156d;
+}
+.items {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between; /* Espaciado entre elementos */
+    padding: 5%;
+    margin-top: 2%;
+}
+
+.items .viajes, .items .transmisión_datos, .items .rutas, .items .inventario, .items .hidro, .items .trafico {
+    flex-basis: calc(33.33% - 10px); /* Ancho de elemento con espacio entre ellos */
+    margin-bottom: 8%; /* Espacio entre elementos */
+    text-align: center;
+}
+i {
+margin-bottom:8%;
+}
+
+
+
+h2 {
+    font-size: 20px;
+    margin-top: 0;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+ul {
+    list-style: disc;
+    margin-left: 20px;
+}
+
+/* Estilos para el navbar de Bootstrap */
+.navbar {
+    background-color: rgba(148, 30, 150, 0.438); /* Color de fondo con transparencia */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
+    position: fixed; /* Fijar la barra de navegación en la parte superior */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100; /* Colocar la barra encima de otros elementos */
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    width: 90%;
+    margin-left: 5%;
+    margin-top: 10px;
+    border-radius: 3%;
+
+}
+
+.navbar-nav {
+    justify-content: center; /* Centrar los elementos de la barra de navegación */
+}
+
+.navbar-nav .nav-item {
+    margin: 0 15px;
+}
+
+.navbar-nav .nav-link {
+    color: #fff;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ff9900; /* Cambiar color al pasar el mouse */
+}
+
+.content {
+    background-color: rgba(0, 0, 0, 0.33); /* Color de fondo con transparencia */
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /*margin: 20px auto;*/
+    margin-top: 10%;
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-bottom: 10%;
+    width:40%;
+    text-align: center;
+}
+
+/* Estilos para el lema */
+.lema {
+    text-align: center;
+    padding: 5%;
+}
+
+.lema h2 {
+    font-size: 24px;
+    margin: 0;
+}
+
+/* Estilos para el botón */
+.boton {
+    text-align: center;
+}
+
+.boton .btn {
+    background-color: #b81f70bc;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    text-decoration: none;
+    margin-top: 10px;
+    display: inline-block;
+}
+
+/* Estilos para el botón al pasar el mouse */
+.boton .btn:hover {
+    background-color: #ff6600;
+}
+.definicion {
+    
+    color: #000000;
+    text-align: left;
+    padding: 20px 0;
+    margin: 2%;
+    min-height: 600px;
+}
+.aplicaciones {
+    
+    color: #000000;
+    text-align: left;
+    padding: 20px 0;
+    margin: 2%;
+    min-height: 600px;
+}
+.texto-def{
+    width: 50%;
+}
+.fordfulk{
+    width:50%;
+    
+  
+}
+.conocimientos {
+    
+    color: #fff;
+    text-align: left;
+    padding: 20px 0;
+    background-image: url('assets/images/fondo2.jpg'); /* Ruta a la imagen de fondo */
+    background-size: cover; /* Ajusta la imagen al tamaño de la ventana */
+    background-repeat: no-repeat; /* Evita la repetición de la imagen */
+    min-height: 600px;
+}
+.conocimientos p{
+    width:70%;
+    margin-left: 15%;
+   
+text-align: left;
+}
+.conocimientos h2{
+    width:70%;
+    margin-left: 15%;
+   margin-bottom: 2%;
+text-align: center;
+}
+
+.conocimientos img{
+    margin: 20px;
+}
+.carrusel {
+    text-align: center;
+    margin-top: 20px;
+}
+.elemento {
+    display: none;
+}
+.elemento.visible {
+    display: block;
+    background-color:#00000043;
+    width:70%;
+    margin-left: 15%;
+    border-radius: 1%;
+  padding: 3%;
+    border: 10%;
+}
+.botoncarrusel {
+    background-color: #b81f70bc;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 5px;
+    margin:2%
+}
+.botoncarrusel:hover {
+    background-color: #ff6600;
+}
+.aleatorio {
+    
+    color: #000000;
+    text-align: left;
+    padding: 20px 0;
+    margin: 2%;
+    min-height: 600px;
+}
+.matriz{
+    width: 55%;
+}
+.grafo{
+    width:45%;
+    
+  
+}
+.aleatorio h2{
+    width: 100%;
+}
+
+.manual{
+    color: #000000;
+    text-align: left;
+    padding: 20px 0;
+    margin: 2%;
+    min-height: 600px;
+}
+.manual h2{ width: 100%;}
+/*
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f2f5;
+}
+
+.container {
+    display: flex;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    width: 800px;
+    max-width: 100%;
+}
+
+.welcome-section, .login-section {
+    padding: 40px;
+    flex: 1;
+}
+
+.welcome-section {
+    background-color: #007BFF;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.welcome-section h1 {
+    margin-bottom: 10px;
+}
+
+.welcome-section p {
+    font-size: 1.2em;
+}
+
+.login-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-section h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+button {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: #fff;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}

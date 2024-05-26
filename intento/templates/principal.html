@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credipay - Listado de Clientes</title>
+    <link rel="stylesheet" href="static/styles2.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/principal" class="navbar-brand">Credipay</a>
+            <div class="navbar-links">
+                <a href="/clientes">Clientes</a>
+                <a href="/reportes">Reportes</a>
+                <a href="/operaciones">Operaciones</a>
+                <a href="/login">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="welcome-message">
+            <h2>Buen día, {{ first_name }} {{ last_name }}</h2>
+        </div>
+        <h2>Listado de Clientes</h2>
+        <div class="boton">
+            <a href="/newcustomer" class="btn">Nuevo Cliente</a>
+        </div>
+        <table class="client-table">
+            <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Tasa (%)</th>
+                    <th>Tipo</th>
+                    <th>Capitalización</th>
+                    <th>Monto Consumido</th>
+                    <th>Saldo</th>
+                    <th>Línea de Crédito</th>
+                    <th>Fecha de Pago</th>
+                    <th>Monto a Pagar</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                <tr>
+                    <td>{{ client[0] }} {{ client[1] }}</td>
+                    <td>{{ client[2] }}%</td>
+                    <td>{{ client[3] }}</td>
+                    <td>{{ client[4] }}</td>
+                    <td></td> <!-- Monto Consumido vacío -->
+                    <td></td> <!-- Saldo vacío -->
+                    <td>{{ client[5] }}</td>
+                    <td>{{ client[6] }}</td>
+                    <td></td> <!-- Monto a Pagar vacío -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

@@ -7,7 +7,7 @@ app = Flask(__name__)
 print("Inicializando la aplicación Flask...")
 app.secret_key = "hola"
 
-DATABASE = 'credipay.db'
+DATABASE = 'credi_pay.db'
 
 def init_db():
     print("Inicializando la base de datos...")

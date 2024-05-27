@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for,flash,session
 import sqlite3
 import os
+from datetime import datetime
 
 app = Flask(__name__)
 print("Inicializando la aplicación Flask...")
@@ -40,6 +41,18 @@ def init_db():
             FOREIGN KEY (user_id) REFERENCES users (id)
         )
     ''')
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS operaciones (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            fecha TEXT NOT NULL,
+            cliente_id INTEGER NOT NULL,
+            tipo_operacion TEXT NOT NULL,
+            monto REAL NOT NULL,
+            FOREIGN KEY (cliente_id) REFERENCES clients (id)
+        )
+    ''')
+    
+    
     conn.commit()
     conn.close()
     print("Base de datos inicializada y tablas creadas.")
@@ -66,6 +79,14 @@ def get_clients_for_user(user_id):
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cursor.execute('SELECT first_name, last_name, rate, rate_type, capitalization, credit_line, payment_date FROM clients WHERE user_id = ?', (user_id,))
+    clients = cursor.fetchall()
+    conn.close()
+    return clients
+
+def get_clients_for_user_op(user_id):
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute('SELECT id, first_name, last_name FROM clients WHERE user_id = ?', (user_id,))
     clients = cursor.fetchall()
     conn.close()
     return clients
@@ -159,6 +180,37 @@ def newcustomer():
         return redirect(url_for('principal'))
 
     return render_template('newcustomer.html')
+
+@app.route('/operaciones', methods=['GET', 'POST'])
+def operaciones():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    user_id = session['user_id']
+
+    if request.method == 'POST':
+        fecha = request.form['fecha']
+        cliente_id = request.form['cliente']
+        tipo_operacion = request.form['tipo_operacion']
+        monto = request.form['monto']
+        
+        # Aquí puedes procesar la operación y guardarla en la base de datos
+        conn = sqlite3.connect(DATABASE)
+        c = conn.cursor()
+        c.execute('''
+            INSERT INTO operaciones (fecha, cliente_id, tipo_operacion, monto)
+            VALUES (?, ?, ?, ?)
+        ''', (fecha, cliente_id, tipo_operacion, monto))
+        conn.commit()
+        conn.close()
+        
+        flash('Operación registrada exitosamente.')
+        return redirect(url_for('principal'))
+
+    clients = get_clients_for_user_op(user_id)
+    fecha_actual = datetime.now().strftime('%Y-%m-%d')
+    return render_template('operaciones.html', clients=clients, fecha_actual=fecha_actual)
+
 
 if __name__ == '__main__':
     init_db()  

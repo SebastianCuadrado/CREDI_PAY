@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credipay - Operaciones</title>
+    <link rel="stylesheet" href="static/styles2.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <a href="/principal" class="navbar-brand">Credipay</a>
+            <div class="navbar-links">
+                <a href="/clientes">Clientes</a>
+                <a href="/reportes">Reportes</a>
+                <a href="/operaciones">Operaciones</a>
+                <a href="/login">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h2>Registrar Operación</h2>
+        <form action="/operaciones" method="POST">
+            <div class="form-group">
+                <label for="fecha">Fecha:</label>
+                <input type="text" id="fecha" name="fecha" value="{{ fecha_actual }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="cliente">Cliente:</label>
+                <select id="cliente" name="cliente" required>
+                    {% for client in clients %}
+                    <option value="{{ client[0] }}">{{ client[1] }} {{ client[2] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="tipo_operacion">Tipo de Operación:</label>
+                <select id="tipo_operacion" name="tipo_operacion" required>
+                    <option value="pago">Pago</option>
+                    <option value="consumo">Consumo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="monto">Monto:</label>
+                <input type="number" id="monto" name="monto" required step="0.01">
+            </div>
+            <div class="form-group">
+                <button type="submit">Registrar Operación</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

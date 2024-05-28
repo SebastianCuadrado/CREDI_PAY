@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for,flash,session
 import sqlite3
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 print("Inicializando la aplicación Flask...")
@@ -75,21 +75,40 @@ def verify_user(username, password):
     conn.close()
     return user
 
+
 def get_clients_for_user(user_id):
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
-    cursor.execute('SELECT first_name, last_name, rate, rate_type, capitalization, credit_line, payment_date FROM clients WHERE user_id = ?', (user_id,))
+    cursor.execute('SELECT id, first_name, last_name, rate, rate_type, capitalization, credit_line, payment_date FROM clients WHERE user_id = ?', (user_id,))
     clients = cursor.fetchall()
-    conn.close()
-    return clients
 
-def get_clients_for_user_op(user_id):
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    cursor.execute('SELECT id, first_name, last_name FROM clients WHERE user_id = ?', (user_id,))
-    clients = cursor.fetchall()
+    clients_with_operations = []
+    for client in clients:
+        client_id = client[0]
+        payment_date = datetime.strptime(client[7], '%Y-%m-%d')
+        
+
+        if datetime.now() > payment_date:
+            start_date = payment_date.replace(day=1) - timedelta(days=1)
+            start_date = start_date.replace(day=payment_date.day)
+        else:
+            start_date = payment_date.replace(day=1) - timedelta(days=1)
+            start_date = start_date.replace(day=payment_date.day - 1)
+
+        cursor.execute('''
+            SELECT SUM(monto) FROM operaciones 
+            WHERE cliente_id = ? AND tipo_operacion = 'consumo' AND fecha BETWEEN ? AND ?
+        ''', (client_id, start_date.strftime('%Y-%m-%d'), payment_date.strftime('%Y-%m-%d')))
+        
+        monto_consumido = cursor.fetchone()[0] or 0
+        saldo = client[6] - monto_consumido
+        
+        clients_with_operations.append(client + (monto_consumido, saldo))
+
     conn.close()
-    return clients
+    return clients_with_operations
+
+
 
 
 @app.route('/')
@@ -153,7 +172,7 @@ def principal():
 def newcustomer():
     if 'user_id' not in session:
         return redirect(url_for('login'))
-
+    
     if request.method == 'POST':
         user_id = session['user_id']
         first_name = request.form['first_name']
@@ -164,21 +183,29 @@ def newcustomer():
         rate_type = request.form['rate_type']
         capitalization = request.form['capitalization']
         credit_line = request.form['credit_line']
-        payment_date = request.form['payment_date']
+        payment_day = int(request.form['payment_day'])
         late_rate = request.form['late_rate']
-
+        
+        today = datetime.today()
+        today = datetime.today()
+        if today.day > payment_day:
+            payment_date = (today.replace(day=1) + timedelta(days=32)).replace(day=payment_day)
+        else:
+            payment_date = today.replace(day=payment_day)
+        
+        
         conn = sqlite3.connect(DATABASE)
-        c = conn.cursor()
-        c.execute('''
+        cursor = conn.cursor()
+        cursor.execute('''
             INSERT INTO clients (user_id, first_name, last_name, phone, dni, rate, rate_type, capitalization, credit_line, payment_date, late_rate)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (user_id, first_name, last_name, phone, dni, rate, rate_type, capitalization, credit_line, payment_date, late_rate))
+        ''', (user_id, first_name, last_name, phone, dni, rate, rate_type, capitalization, credit_line, payment_date.strftime('%Y-%m-%d'), late_rate))
         conn.commit()
         conn.close()
-
-        flash('Cliente agregado exitosamente.')
+        
+        flash('Cliente creado exitosamente.')
         return redirect(url_for('principal'))
-
+    
     return render_template('newcustomer.html')
 
 @app.route('/operaciones', methods=['GET', 'POST'])
@@ -194,7 +221,6 @@ def operaciones():
         tipo_operacion = request.form['tipo_operacion']
         monto = request.form['monto']
         
-        # Aquí puedes procesar la operación y guardarla en la base de datos
         conn = sqlite3.connect(DATABASE)
         c = conn.cursor()
         c.execute('''
@@ -207,7 +233,7 @@ def operaciones():
         flash('Operación registrada exitosamente.')
         return redirect(url_for('principal'))
 
-    clients = get_clients_for_user_op(user_id)
+    clients = get_clients_for_user(user_id)
     fecha_actual = datetime.now().strftime('%Y-%m-%d')
     return render_template('operaciones.html', clients=clients, fecha_actual=fecha_actual)
 

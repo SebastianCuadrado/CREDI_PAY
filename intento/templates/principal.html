@@ -43,14 +43,14 @@
             <tbody>
                 {% for client in clients %}
                 <tr>
-                    <td>{{ client[0] }} {{ client[1] }}</td>
-                    <td>{{ client[2] }}%</td>
-                    <td>{{ client[3] }}</td>
+                    <td>{{ client[1] }} {{ client[2] }}</td>
+                    <td>{{ client[3] }}%</td>
                     <td>{{ client[4] }}</td>
-                    <td></td> <!-- Monto Consumido vacío -->
-                    <td></td> <!-- Saldo vacío -->
                     <td>{{ client[5] }}</td>
-                    <td>{{ client[6] }}</td>
+                    <td>${{ '%.2f' % client[8] }}</td> <!-- Monto Consumido -->
+                    <td>${{ '%.2f' % client[9] }}</td> <!-- Saldo -->
+                    <td>${{ '%.2f' % client[6] }}</td>
+                    <td>{{ client[7] }}</td>
                     <td></td> <!-- Monto a Pagar vacío -->
                 </tr>
                 {% endfor %}

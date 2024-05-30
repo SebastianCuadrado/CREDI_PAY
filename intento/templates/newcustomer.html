@@ -47,12 +47,18 @@
                                 <label for="rate">Tasa Asignada</label>
                                 <input type="number" step="0.01" id="rate" name="rate" required>
                             </div>
-                            <div class="input-group">
-                                <label for="rate-type">Tipo de Tasa</label>
-                                <select id="rate-type" name="rate_type" required>
+                            <div class="input-group mb-3">
+                                <label for="type">Tipo de Tasa</label>
+                                <select id="type" name="type" class="form-control" required>
                                     <option value="" disabled selected>Selecciona el tipo de tasa</option>
                                     <option value="nominal">Nominal</option>
                                     <option value="efectiva">Efectiva</option>
+                                </select>
+                            </div>
+                            <div class="input-group mb-3">
+                                <label for="rate-type">Especificación de Tasa</label>
+                                <select id="rate-type" name="rate_type" class="form-control" required>
+                                    <option value="" disabled selected>Selecciona la especificación de tasa</option>
                                 </select>
                             </div>
                             <div class="input-group">
@@ -82,6 +88,43 @@
                 </form>
             </div>
         </div>
+    
+        <script>
+            document.getElementById('type').addEventListener('change', function() {
+                var rateType = this.value;
+                var specificRateType = document.getElementById('rate-type');
+                
+                var options = {
+                    nominal: [
+                        {value: 'TNM', text: 'TNM (Tasa Nom. Mensual)'},
+                        {value: 'TNB', text: 'TNB (Tasa Nom. Bimestral)'},
+                        {value: 'TNT', text: 'TNT (Tasa Nom. Trimestral)'},
+                        {value: 'TNC', text: 'TNC (Tasa Nom. Cuatrimestral)'},
+                        {value: 'TNS', text: 'TNS (Tasa Nom. Semestral)'},
+                        {value: 'TNA', text: 'TNA (Tasa Nom. Anual)'}
+                    ],
+                    efectiva: [
+                        {value: 'TEM', text: 'TEM (Tasa Efec. Mensual)'},
+                        {value: 'TEB', text: 'TEB (Tasa Efec. Bimestral)'},
+                        {value: 'TET', text: 'TET (Tasa Efec. Trimestral)'},
+                        {value: 'TEC', text: 'TEC (Tasa Efec. Cuatrimestral)'},
+                        {value: 'TES', text: 'TES (Tasa Efec. Semestral)'},
+                        {value: 'TEA', text: 'TEA (Tasa Efec. Anual)'}
+                    ]
+                };
+                
+                // Clear existing options
+                specificRateType.innerHTML = '<option value="" disabled selected>Selecciona la especificación de tasa</option>';
+                
+                // Populate new options
+                options[rateType].forEach(function(option) {
+                    var opt = document.createElement('option');
+                    opt.value = option.value;
+                    opt.text = option.text;
+                    specificRateType.add(opt);
+                });
+            });
+        </script>
     </body>
     </html>
     

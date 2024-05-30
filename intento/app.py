@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for,flash,session
+from flask import Flask, render_template, request, redirect, url_for,flash,session,jsonify
 import sqlite3
 import os
 from datetime import datetime, timedelta
@@ -48,6 +48,7 @@ def init_db():
             cliente_id INTEGER NOT NULL,
             tipo_operacion TEXT NOT NULL,
             monto REAL NOT NULL,
+            periodo TEXT,
             FOREIGN KEY (cliente_id) REFERENCES clients (id)
         )
     ''')
@@ -107,6 +108,27 @@ def get_clients_for_user(user_id):
 
     conn.close()
     return clients_with_operations
+
+def add_operacion(fecha, cliente_id, tipo_operacion, monto):
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    
+    cursor.execute('SELECT payment_date FROM clients WHERE id = ?', (cliente_id,))
+    payment_date_str = cursor.fetchone()[0]
+    payment_date = datetime.strptime(payment_date_str, '%Y-%m-%d')
+    
+    
+    periodo = f"{payment_date.month}{str(payment_date.year)[-2:]}"
+
+    
+    cursor.execute('''
+        INSERT INTO operaciones (fecha, cliente_id, tipo_operacion, monto, periodo)
+        VALUES (?, ?, ?, ?, ?)
+    ''', (fecha, cliente_id, tipo_operacion, monto, periodo))
+    
+    conn.commit()
+    conn.close()
 
 
 
@@ -221,14 +243,7 @@ def operaciones():
         tipo_operacion = request.form['tipo_operacion']
         monto = request.form['monto']
         
-        conn = sqlite3.connect(DATABASE)
-        c = conn.cursor()
-        c.execute('''
-            INSERT INTO operaciones (fecha, cliente_id, tipo_operacion, monto)
-            VALUES (?, ?, ?, ?)
-        ''', (fecha, cliente_id, tipo_operacion, monto))
-        conn.commit()
-        conn.close()
+        add_operacion(fecha, cliente_id, tipo_operacion, monto)
         
         flash('Operación registrada exitosamente.')
         return redirect(url_for('principal'))
@@ -236,6 +251,49 @@ def operaciones():
     clients = get_clients_for_user(user_id)
     fecha_actual = datetime.now().strftime('%Y-%m-%d')
     return render_template('operaciones.html', clients=clients, fecha_actual=fecha_actual)
+
+@app.route('/get_periodos/<int:cliente_id>', methods=['GET'])
+def get_periodos(cliente_id):
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    
+    cursor.execute('SELECT DISTINCT periodo FROM operaciones WHERE cliente_id = ?', (cliente_id,))
+    periodos = [row[0] for row in cursor.fetchall()]
+    
+    conn.close()
+    return jsonify(periodos)
+
+@app.route('/reportes', methods=['GET', 'POST'])
+def reportes():
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    
+    # Obtener la lista de clientes
+    cursor.execute('SELECT id, first_name, last_name FROM clients')
+    clients = cursor.fetchall()
+    
+    operaciones = None
+    selected_client = None
+    selected_periodo = None
+    
+    if request.method == 'POST':
+        selected_client = int(request.form['cliente'])
+        selected_periodo = request.form['periodo']
+        
+        cursor.execute('''
+            SELECT o.id, o.fecha, c.credit_line, c.rate, c.rate_type, o.monto, c.payment_date 
+            FROM operaciones o
+            JOIN clients c ON o.cliente_id = c.id
+            WHERE o.cliente_id = ? AND o.periodo = ?
+        ''', (selected_client, selected_periodo))
+        
+        operaciones = cursor.fetchall()
+
+    conn.close()
+    
+    return render_template('reportes.html', clients=clients, operaciones=operaciones, 
+                           selected_client=selected_client, selected_periodo=selected_periodo, 
+                           enumerate=enumerate, datetime=datetime)
 
 
 if __name__ == '__main__':

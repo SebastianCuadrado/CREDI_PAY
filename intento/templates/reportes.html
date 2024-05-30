@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credipay - Reportes</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/principal">Credipay</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="/clientes">Clientes</a></li>
+                <li class="nav-item"><a class="nav-link" href="/reportes">Reportes</a></li>
+                <li class="nav-item"><a class="nav-link" href="/operaciones">Operaciones</a></li>
+                <li class="nav-item"><a class="nav-link" href="/login">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-5">
+        <h2>Reportes de Operaciones</h2>
+        <form method="POST" class="mb-4">
+            <div class="form-group">
+                <label for="cliente">Seleccione Cliente:</label>
+                <select id="cliente" name="cliente" class="form-control" required>
+                    <option value="" disabled selected>Selecciona un cliente</option>
+                    {% for client in clients %}
+                    <option value="{{ client[0] }}" {% if client[0] == selected_client %}selected{% endif %}>{{ client[1] }} {{ client[2] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="periodo">Seleccione Periodo:</label>
+                <select id="periodo" name="periodo" class="form-control" required>
+                    <option value="" disabled selected>Selecciona un periodo</option>
+                    <!-- Los periodos serán llenados dinámicamente con JavaScript -->
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Obtener Reporte</button>
+        </form>
+        {% if operaciones %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Hito</th>
+                    <th>Fecha</th>
+                    <th>Línea</th>
+                    <th>Tasa (%)</th>
+                    <th>Tipo de Tasa</th>
+                    <th>Monto Consumido</th>
+                    <th>Interés</th>
+                    <th>Monto a Pagar</th>
+                    <th>Saldo</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i, operacion in enumerate(operaciones) %}
+<tr>
+    <td>{{ i + 1 }}</td>
+    <td>{{ operacion[1] }}</td>
+    <td>${{ '%.2f' % operacion[2] }}</td>
+    <td>{{ operacion[3] }}%</td>
+    <td>{{ operacion[4] }}</td>
+    <td>${{ '%.2f' % operacion[5] }}</td>
+    {% set fecha_pago = datetime.strptime(operacion[6], '%Y-%m-%d') %}
+    {% set fecha_operacion = datetime.strptime(operacion[1], '%Y-%m-%d') %}
+    {% set dias = (fecha_pago - fecha_operacion).days %}
+    {% set monto_a_pagar = operacion[5] * (1 + (operacion[3] / 100)) ** (dias / 360) %}
+    <td>${{ '%.2f' % (monto_a_pagar - operacion[5]) }}</td>
+    <td>${{ '%.2f' % monto_a_pagar }}</td>
+    <td>${{ '%.2f' % (operacion[2] - operacion[5]) }}</td>
+</tr>
+{% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#cliente').change(function() {
+                var clienteId = $(this).val();
+                if (clienteId) {
+                    $.ajax({
+                        url: '/get_periodos/' + clienteId,
+                        method: 'GET',
+                        success: function(data) {
+                            $('#periodo').empty();
+                            $('#periodo').append('<option value="" disabled selected>Selecciona un periodo</option>');
+                            data.forEach(function(periodo) {
+                                $('#periodo').append('<option value="' + periodo + '">' + periodo + '</option>');
+                            });
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

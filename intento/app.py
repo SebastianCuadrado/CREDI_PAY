@@ -49,6 +49,9 @@ def init_db():
             tipo_operacion TEXT NOT NULL,
             monto REAL NOT NULL,
             periodo TEXT,
+            tasa_operacion REAL,
+            tipotasa_operacion TEXT,
+            montopago REAL,
             FOREIGN KEY (cliente_id) REFERENCES clients (id)
         )
     ''')
@@ -76,6 +79,22 @@ def verify_user(username, password):
     conn.close()
     return user
 
+def calcular_monto_pago(monto, tasa, tasa_tipo, fecha_operacion, fecha_pago):
+    dias = (fecha_pago - fecha_operacion).days
+    if tasa_tipo == 'TEA':
+        return monto * (1 + tasa / 100) ** (dias / 360)
+    elif tasa_tipo == 'TET':
+        return monto * (1 + tasa / 100) ** (dias / 90)
+    elif tasa_tipo == 'TEC':
+        return monto * (1 + tasa / 100) ** (dias / 120)
+    elif tasa_tipo == 'TEB':
+        return monto * (1 + tasa / 100) ** (dias / 60)
+    elif tasa_tipo == 'TEM':
+        return monto * (1 + tasa / 100) ** (dias / 30)
+    elif tasa_tipo == 'TES':
+        return monto * (1 + tasa / 100) ** (dias / 180)
+    else:
+        return monto
 
 def get_clients_for_user(user_id):
     conn = sqlite3.connect(DATABASE)
@@ -88,13 +107,23 @@ def get_clients_for_user(user_id):
         client_id = client[0]
         payment_date = datetime.strptime(client[7], '%Y-%m-%d')
         
-
-        if datetime.now() > payment_date:
-            start_date = payment_date.replace(day=1) - timedelta(days=1)
-            start_date = start_date.replace(day=payment_date.day)
-        else:
-            start_date = payment_date.replace(day=1) - timedelta(days=1)
-            start_date = start_date.replace(day=payment_date.day - 1)
+        # Ajustar la fecha de inicio correctamente para evitar errores de fecha
+        try:
+            if datetime.now() > payment_date:
+                start_date = payment_date.replace(day=1) - timedelta(days=1)
+                start_date = start_date.replace(day=payment_date.day)
+            else:
+                start_date = payment_date.replace(day=1) - timedelta(days=1)
+                start_date = start_date.replace(day=payment_date.day - 1)
+        except ValueError:
+            # Manejo de errores en caso de que el día sea inválido para el mes anterior
+            last_day_of_prev_month = (payment_date.replace(day=1) - timedelta(days=1)).day
+            if datetime.now() > payment_date:
+                start_date = payment_date.replace(day=1) - timedelta(days=1)
+                start_date = start_date.replace(day=min(payment_date.day, last_day_of_prev_month))
+            else:
+                start_date = payment_date.replace(day=1) - timedelta(days=1)
+                start_date = start_date.replace(day=min(payment_date.day - 1, last_day_of_prev_month))
 
         cursor.execute('''
             SELECT SUM(monto) FROM operaciones 
@@ -109,23 +138,21 @@ def get_clients_for_user(user_id):
     conn.close()
     return clients_with_operations
 
-def add_operacion(fecha, cliente_id, tipo_operacion, monto):
+def add_operacion(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa):
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
 
-    
     cursor.execute('SELECT payment_date FROM clients WHERE id = ?', (cliente_id,))
     payment_date_str = cursor.fetchone()[0]
     payment_date = datetime.strptime(payment_date_str, '%Y-%m-%d')
-    
-    
-    periodo = f"{payment_date.month}{str(payment_date.year)[-2:]}"
 
-    
+    fecha_operacion = datetime.strptime(fecha, '%Y-%m-%d')
+    monto_pago = calcular_monto_pago(float(monto), float(tasa_operacion), tipo_tasa, fecha_operacion, payment_date)
+
     cursor.execute('''
-        INSERT INTO operaciones (fecha, cliente_id, tipo_operacion, monto, periodo)
-        VALUES (?, ?, ?, ?, ?)
-    ''', (fecha, cliente_id, tipo_operacion, monto, periodo))
+        INSERT INTO operaciones (fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipotasa_operacion, montopago, periodo)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    ''', (fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa, monto_pago, payment_date.strftime('%m%y')))
     
     conn.commit()
     conn.close()
@@ -188,8 +215,6 @@ def principal():
     print(f"Sesión: first_name={first_name}, last_name={last_name}")  
     return render_template('principal.html', first_name=first_name, last_name=last_name, clients=clients)
 
-
-
 @app.route('/newcustomer', methods=['GET', 'POST'])
 def newcustomer():
     if 'user_id' not in session:
@@ -214,8 +239,7 @@ def newcustomer():
             payment_date = (today.replace(day=1) + timedelta(days=32)).replace(day=payment_day)
         else:
             payment_date = today.replace(day=payment_day)
-        
-        
+          
         conn = sqlite3.connect(DATABASE)
         cursor = conn.cursor()
         cursor.execute('''
@@ -230,6 +254,7 @@ def newcustomer():
     
     return render_template('newcustomer.html')
 
+
 @app.route('/operaciones', methods=['GET', 'POST'])
 def operaciones():
     if 'user_id' not in session:
@@ -242,8 +267,10 @@ def operaciones():
         cliente_id = request.form['cliente']
         tipo_operacion = request.form['tipo_operacion']
         monto = request.form['monto']
+        tasa_operacion = request.form['rate']
+        tipo_tasa = request.form['rate_type']
         
-        add_operacion(fecha, cliente_id, tipo_operacion, monto)
+        add_operacion(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa)
         
         flash('Operación registrada exitosamente.')
         return redirect(url_for('principal'))
@@ -265,12 +292,11 @@ def get_periodos(cliente_id):
 
 @app.route('/reportes', methods=['GET', 'POST'])
 def reportes():
-    conn = sqlite3.connect(DATABASE)
-    cursor = conn.cursor()
-    
-    # Obtener la lista de clientes
-    cursor.execute('SELECT id, first_name, last_name FROM clients')
-    clients = cursor.fetchall()
+    if 'user_id' not in session:
+        return redirect('/login')
+
+    user_id = session['user_id']
+    clients = get_clients_for_user(user_id)
     
     operaciones = None
     selected_client = None
@@ -280,16 +306,18 @@ def reportes():
         selected_client = int(request.form['cliente'])
         selected_periodo = request.form['periodo']
         
+        conn = sqlite3.connect(DATABASE)
+        cursor = conn.cursor()
+        
         cursor.execute('''
-            SELECT o.id, o.fecha, c.credit_line, c.rate, c.rate_type, o.monto, c.payment_date 
+            SELECT o.id, o.fecha, c.credit_line, o.tasa_operacion, o.tipotasa_operacion, o.monto,o.montopago, c.payment_date 
             FROM operaciones o
             JOIN clients c ON o.cliente_id = c.id
             WHERE o.cliente_id = ? AND o.periodo = ?
         ''', (selected_client, selected_periodo))
         
         operaciones = cursor.fetchall()
-
-    conn.close()
+        conn.close()
     
     return render_template('reportes.html', clients=clients, operaciones=operaciones, 
                            selected_client=selected_client, selected_periodo=selected_periodo, 

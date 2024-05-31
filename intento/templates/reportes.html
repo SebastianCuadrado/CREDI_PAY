@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Credipay - Reportes</title>
+    <title>Reportes de Operaciones</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -19,23 +18,24 @@
             </ul>
         </div>
     </nav>
-    <div class="container mt-5">
-        <h2>Reportes de Operaciones</h2>
-        <form method="POST" class="mb-4">
+    <div class="container">
+        <h2>Reporte de Operaciones</h2>
+        <form method="POST" action="/reportes">
             <div class="form-group">
-                <label for="cliente">Seleccione Cliente:</label>
+                <label for="cliente">Selecciona un cliente:</label>
                 <select id="cliente" name="cliente" class="form-control" required>
                     <option value="" disabled selected>Selecciona un cliente</option>
                     {% for client in clients %}
-                    <option value="{{ client[0] }}" {% if client[0] == selected_client %}selected{% endif %}>{{ client[1] }} {{ client[2] }}</option>
+                    <option value="{{ client[0] }}" {% if client[0] == selected_client %}selected{% endif %}>
+                        {{ client[1] }} {{ client[2] }}
+                    </option>
                     {% endfor %}
                 </select>
             </div>
             <div class="form-group">
-                <label for="periodo">Seleccione Periodo:</label>
+                <label for="periodo">Selecciona un periodo:</label>
                 <select id="periodo" name="periodo" class="form-control" required>
                     <option value="" disabled selected>Selecciona un periodo</option>
-                    <!-- Los periodos serán llenados dinámicamente con JavaScript -->
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Obtener Reporte</button>
@@ -57,26 +57,23 @@
             </thead>
             <tbody>
                 {% for i, operacion in enumerate(operaciones) %}
-<tr>
-    <td>{{ i + 1 }}</td>
-    <td>{{ operacion[1] }}</td>
-    <td>${{ '%.2f' % operacion[2] }}</td>
-    <td>{{ operacion[3] }}%</td>
-    <td>{{ operacion[4] }}</td>
-    <td>${{ '%.2f' % operacion[5] }}</td>
-    {% set fecha_pago = datetime.strptime(operacion[6], '%Y-%m-%d') %}
-    {% set fecha_operacion = datetime.strptime(operacion[1], '%Y-%m-%d') %}
-    {% set dias = (fecha_pago - fecha_operacion).days %}
-    {% set monto_a_pagar = operacion[5] * (1 + (operacion[3] / 100)) ** (dias / 360) %}
-    <td>${{ '%.2f' % (monto_a_pagar - operacion[5]) }}</td>
-    <td>${{ '%.2f' % monto_a_pagar }}</td>
-    <td>${{ '%.2f' % (operacion[2] - operacion[5]) }}</td>
-</tr>
-{% endfor %}
+                <tr>
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ operacion[1] }}</td>
+                    <td>${{ '%.2f' % operacion[2] }}</td>
+                    <td>{{ operacion[3] }}%</td>
+                    <td>{{ operacion[4] }}</td>
+                    <td>${{ '%.2f' % operacion[5] }}</td>
+                    <td>${{ '%.2f' % (operacion[6] - operacion[5]) }}</td>
+                    <td>${{ '%.2f' % operacion[6] }}</td>
+                    <td>${{ '%.2f' % (operacion[2] - operacion[5]) }}</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
         {% endif %}
     </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#cliente').change(function() {
@@ -97,5 +94,6 @@
             });
         });
     </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

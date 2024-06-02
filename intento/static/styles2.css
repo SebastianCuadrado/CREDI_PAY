@@ -1,3 +1,4 @@
+/* Estilos globales */
 * {
     margin: 0;
     padding: 0;
@@ -5,22 +6,29 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f2f5;
-    padding-top: 60px; /* Añadir un poco de espacio en la parte superior para el navbar flotante */
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f8ff; /* Fondo azul claro */
+    color: #333; /* Texto principal */
+    padding-top: 70px; /* Espacio para el navbar fijo */
 }
 
+/* Navbar */
 .navbar {
     position: fixed;
-    top: 0;
-    width: 100%;
-    background-color: rgba(104, 191, 195, 0.9); /* Color casi transparente */
+    left: 2.5%;
+    right:2.5%;
+    top:0;
+    width: 90%;
+    background-color: rgb(4 77 97 / 57%); 
+
     padding: 10px 20px;
     z-index: 1000; /* Asegura que el navbar esté por encima de otros elementos */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.295);
+    
+    margin:0.5%;
 }
 
 .navbar .navbar-container {
@@ -31,14 +39,14 @@ body {
 }
 
 .navbar .navbar-brand {
-    color: white;
+    color: #ffffff;
     font-size: 1.5em;
     text-decoration: none;
     font-weight: bold;
 }
 
 .navbar .navbar-links a {
-    color: white;
+    color: #ffffff;
     text-decoration: none;
     margin: 0 15px;
     font-weight: bold;
@@ -48,28 +56,55 @@ body {
     text-decoration: underline;
 }
 
+/* Contenedor principal */
 .container {
     margin: 20px auto;
     width: 90%;
     max-width: 1200px;
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     padding: 20px;
 }
 
-.client-list-section {
+/* Secciones de la página */
+.client-list-section,
+.register-section,
+.welcome-section,
+.login-section {
     padding: 40px;
 }
 
-.client-list-section h2 {
+.client-list-section h2,
+.register-section h2,
+.login-section h2 {
     margin-bottom: 20px;
     color: #333;
     font-size: 24px;
     text-align: center;
 }
 
+.welcome-section {
+    background-color: #68bfc3;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px;
+}
+
+.welcome-section h1 {
+    margin-bottom: 10px;
+}
+
+.welcome-section p {
+    font-size: 1.2em;
+}
+
+/* Tabla de clientes */
 .client-table {
     width: 100%;
     border-collapse: collapse;
@@ -84,8 +119,8 @@ body {
 }
 
 .client-table th {
-    background-color: #68bfc3;
-    color: #fff;
+    background-color: #4a97bb9f;
+    color: #ffffff;
 }
 
 .client-table tr:hover {
@@ -95,12 +130,6 @@ body {
 /* Estilos adicionales */
 .input-group {
     margin-bottom: 15px;
-}
-
-.input-group input:focus,
-.input-group select:focus {
-    outline: none;
-    border-color: #007BFF;
 }
 
 .input-group label {
@@ -117,13 +146,20 @@ body {
     border-radius: 5px;
 }
 
+.input-group input:focus,
+.input-group select:focus {
+    outline: none;
+    border-color: #007BFF;
+}
+
+/* Botones */
 .boton {
     text-align: center;
 }
 
 .boton .btn {
-    background-color: #68bfc3;
-    color: #fff;
+    background-color: #56a9a8;
+    color: #ffffff;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -134,52 +170,10 @@ body {
 }
 
 .boton .btn:hover {
-    background-color: #479845;
+    background-color: #3b814dd0;
 }
 
-.register-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-left: 20%;
-}
-
-.register-section h2 {
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 24px;
-}
-
-.welcome-section, .login-section, .register-section {
-    padding: 40px;
-    flex: 1;
-}
-
-.welcome-section {
-    background-color: #68bfc3;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
-
-.welcome-section h1 {
-    margin-bottom: 10px;
-}
-
-.welcome-section p {
-    font-size: 1.2em;
-}
-
-.login-section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.login-section h2 {
-    margin-bottom: 20px;
-    color: #333;
+/* Estilos adicionales para la tabla */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(104, 191, 195, 0.2); /* Verde agua marina claro */
 }

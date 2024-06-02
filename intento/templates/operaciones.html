@@ -30,9 +30,13 @@
                 <select id="cliente" name="cliente" required onchange="updateClienteInfo()">
                     <option value="" disabled selected>Selecciona un cliente</option>
                     {% for client in clients %}
-                    <option value="{{ client[0] }}" data-rate="{{ client[3] }}" data-rate-type="{{ client[4] }}">{{ client[1] }} {{ client[2] }}</option>
+                    <option value="{{ client[0] }}" data-rate="{{ client[3] }}" data-rate-type="{{ client[4] }}" data-capitalization="{{ client[5] }}">{{ client[1] }} {{ client[2] }}</option>
                     {% endfor %}
                 </select>
+            </div>
+            <div class="input-group">
+                <label for="saldo">Saldo Actual</label>
+                <input type="text" id="saldo" name="saldo" readonly>
             </div>
             <div class="input-group">
                 <label for="tipo_operacion">Tipo de Operación</label>
@@ -54,6 +58,10 @@
                 <input type="text" id="rate_type" name="rate_type" readonly>
             </div>
             <div class="input-group">
+                <label for="capitalization">Capitalización</label>
+                <input type="text" id="capitalization" name="capitalization" readonly>
+            </div>
+            <div class="input-group">
                 <button type="submit" class="btn">Registrar</button>
             </div>
         </form>
@@ -64,10 +72,31 @@
             var selectedOption = clienteSelect.options[clienteSelect.selectedIndex];
             var rate = selectedOption.getAttribute('data-rate');
             var rateType = selectedOption.getAttribute('data-rate-type');
+            var capitalization = selectedOption.getAttribute('data-capitalization');
 
             document.getElementById('rate').value = rate;
             document.getElementById('rate_type').value = rateType;
+            document.getElementById('capitalization').value = capitalization;
+
+            
+            var clienteId = clienteSelect.value;
+            fetch('/get_saldo/' + clienteId)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('saldo').value = data.saldo.toFixed(2);
+                });
         }
+
+        document.getElementById('operacion-form').addEventListener('submit', function(event) {
+            var saldo = parseFloat(document.getElementById('saldo').value);
+            var monto = parseFloat(document.getElementById('monto').value);
+            var tipoOperacion = document.getElementById('tipo_operacion').value;
+
+            if (tipoOperacion === 'consumo' && monto > saldo) {
+                event.preventDefault();
+                alert('El monto de la operación supera el saldo disponible. No se puede realizar esta operación.');
+            }
+        });
     </script>
 </body>
 </html>

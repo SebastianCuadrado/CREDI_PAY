@@ -32,7 +32,7 @@
                     <th>Cliente</th>
                     <th>Tasa (%)</th>
                     <th>Tipo</th>
-                    <th>Capitalización</th>
+                    <th>Cap.</th>
                     <th>Monto Consumido</th>
                     <th>Saldo</th>
                     <th>Línea de Crédito</th>
@@ -47,11 +47,11 @@
                     <td>{{ client[3] }}%</td>
                     <td>{{ client[4] }}</td>
                     <td>{{ client[5] }}</td>
-                    <td>${{ '%.2f' % client[8] }}</td> <!-- Monto Consumido -->
-                    <td>${{ '%.2f' % client[9] }}</td> <!-- Saldo -->
+                    <td>${{ '%.2f' % client[8] }}</td> 
+                    <td>${{ '%.2f' % client[9] }}</td> 
                     <td>${{ '%.2f' % client[6] }}</td>
                     <td>{{ client[7] }}</td>
-                    <td></td> <!-- Monto a Pagar vacío -->
+                    <td>${{ '%.2f' % client[10] }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

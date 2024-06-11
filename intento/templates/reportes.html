@@ -61,22 +61,20 @@
                 </tr>
             </thead>
             <tbody>
-                {% set saldo = operaciones[0][2] - operaciones[0][5] %}
-                <tr>
-                    <td>1</td>
-                    <td>{{ operaciones[0][1] }}</td>
-                    <td>${{ '%.2f' % operaciones[0][2] }}</td>
-                    <td>{{ operaciones[0][3] }}%</td>
-                    <td>{{ operaciones[0][4] }}</td>
-                    <td>${{ '%.2f' % operaciones[0][5] }}</td>
-                    <td>${{ '%.2f' % (operaciones[0][6] - operaciones[0][5]) }}</td>
-                    <td>${{ '%.2f' % operaciones[0][6] }}</td>
-                    <td>${{ '%.2f' % saldo }}</td>
-                </tr>
-                {% for i, operacion in enumerate(operaciones[1:], start=1) %}
-                    {% set saldo = saldo - operacion[5] %}
+                {% set saldo_anterior = 0 %}
+                {% for i, operacion in enumerate(operaciones, start=1) %}
+                    {%  if i==1%}
+                        {% set saldo = operacion[2] - operacion[5] %}
+                        {% set saldo_anterior = saldo %}
+                        
+                    {%  else %}
+                        {% set saldo = saldo_anterior - operacion[5] %}
+                        {% set saldo_anterior = saldo %}
+                        
+                    {% endif %}
+                    
                     <tr>
-                        <td>{{ i + 1 }}</td>
+                        <td>{{ i }}</td>
                         <td>{{ operacion[1] }}</td>
                         <td>${{ '%.2f' % operacion[2] }}</td>
                         <td>{{ operacion[3] }}%</td>
@@ -89,6 +87,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        
         <div class="row mt-3">
             <div class="col-md-6">
                 <p><strong>Fecha de Pago:</strong> {{ fecha_de_pago }}</p>

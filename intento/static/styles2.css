@@ -177,3 +177,6 @@ body {
 .table-striped tbody tr:nth-of-type(odd) {
     background-color: rgba(104, 191, 195, 0.2); /* Verde agua marina claro */
 }
+
+.modal-content{
+ margin:5%;}

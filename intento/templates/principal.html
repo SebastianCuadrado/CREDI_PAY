@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Credipay - Listado de Clientes</title>
+    <title>Credipay - Dashboard</title>
     <link rel="stylesheet" href="static/styles2.css">
 </head>
 <body>
@@ -44,14 +44,14 @@
                 {% for client in clients %}
                 <tr>
                     <td>{{ client[1] }} {{ client[2] }}</td>
-                    <td>{{ client[3] }}%</td>
-                    <td>{{ client[4] }}</td>
-                    <td>{{ client[5] }}</td>
-                    <td>${{ '%.2f' % client[8] }}</td> 
-                    <td>${{ '%.2f' % client[9] }}</td> 
-                    <td>${{ '%.2f' % client[6] }}</td>
+                    <td>{{ client[5] }}%</td>
+                    <td>{{ client[6] }}</td>
                     <td>{{ client[7] }}</td>
-                    <td>${{ '%.2f' % client[10] }}</td>
+                    <td>${{ '%.2f' % client[11] }}</td> 
+                    <td>${{ '%.2f' % client[12] }}</td> 
+                    <td>${{ '%.2f' % client[8] }}</td>
+                    <td>{{ client[9] }}</td>
+                    <td>${{ '%.2f' % client[13] }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -84,13 +84,13 @@ def verify_user(username, password):
 def get_clients_for_user(user_id):
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
-    cursor.execute('SELECT id, first_name, last_name, rate, rate_type, capitalization, credit_line, payment_date FROM clients WHERE user_id = ?', (user_id,))
+    cursor.execute('SELECT id, first_name, last_name, phone,dni, rate, rate_type, capitalization, credit_line, payment_date,late_rate FROM clients WHERE user_id = ?', (user_id,))
     clients = cursor.fetchall()
 
     clients_with_operations = []
     for client in clients:
         client_id = client[0]
-        payment_date = datetime.strptime(client[7], '%Y-%m-%d')
+        payment_date = datetime.strptime(client[9], '%Y-%m-%d')
         
         
         try:
@@ -118,7 +118,7 @@ def get_clients_for_user(user_id):
         result = cursor.fetchone()
         monto_consumido = result[0] or 0
         monto_a_pagar = result[1] or 0
-        saldo = client[6] - monto_consumido
+        saldo = client[8] - monto_consumido
         
         clients_with_operations.append(client + (monto_consumido, saldo, monto_a_pagar))
 
@@ -263,6 +263,47 @@ def principal():
     print(f"Sesión: first_name={first_name}, last_name={last_name}")  
     return render_template('principal.html', first_name=first_name, last_name=last_name, clients=clients)
 
+@app.route('/clientes', methods=['GET', 'POST'])
+def clientes():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    user_id = session['user_id']
+    clients = get_clients_for_user(user_id)
+    
+    
+    
+    return render_template('clientes.html', clients=clients)
+
+@app.route('/update_cliente', methods=['POST'])
+def update_cliente():
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+
+    data = request.json
+    client_id = data['id']
+    first_name = data['first_name']
+    last_name = data['last_name']
+    phone = data['phone']
+    dni = data['dni']
+    rate = data['rate']
+    rate_type = data['rate_type']
+    capitalization = data['capitalization']
+    credit_line = data['credit_line']
+    payment_date = data['payment_date']
+    late_rate = data['late_rate']
+
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute("""
+        UPDATE clients
+        SET first_name = ?, last_name = ?, phone = ?, dni = ?, rate = ?, rate_type = ?, capitalization = ?, credit_line = ?, payment_date = ?, late_rate = ?
+        WHERE id = ?
+    """, (first_name, last_name, phone, dni, rate, rate_type, capitalization, credit_line, payment_date, late_rate, client_id))
+    conn.commit()
+    conn.close()
+
+    return jsonify({"success": True})
+
 @app.route('/newcustomer', methods=['GET', 'POST'])
 def newcustomer():
     if 'user_id' not in session:
@@ -281,7 +322,6 @@ def newcustomer():
         payment_day = int(request.form['payment_day'])
         late_rate = request.form['late_rate']
         
-        today = datetime.today()
         today = datetime.today()
         if today.day > payment_day:
             payment_date = (today.replace(day=1) + timedelta(days=32)).replace(day=payment_day)
@@ -320,13 +360,15 @@ def get_saldo(cliente_id):
     return jsonify(saldo=saldo)
 
 
+
 @app.route('/operaciones', methods=['GET', 'POST'])
 def operaciones():
     if 'user_id' not in session:
         return redirect(url_for('login'))
 
     user_id = session['user_id']
-
+    
+            
     if request.method == 'POST':
         fecha = request.form['fecha']
         cliente_id = request.form['cliente']
@@ -337,13 +379,24 @@ def operaciones():
         capitalization=request.form['capitalization']
         
         add_operacion(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa,capitalization)
-        
+        update_cliente(cliente_id, tasa_operacion, tipo_tasa, capitalization)
         flash('Operación registrada exitosamente.')
         return redirect(url_for('principal'))
 
     clients = get_clients_for_user(user_id)
     fecha_actual = datetime.now().strftime('%Y-%m-%d')
     return render_template('operaciones.html', clients=clients, fecha_actual=fecha_actual)
+
+def update_cliente(cliente_id, new_rate, new_rate_type, new_capitalization):
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    cursor.execute('''
+        UPDATE clients
+        SET rate = ?, rate_type = ?, capitalization = ?
+        WHERE id = ?
+    ''', (new_rate, new_rate_type, new_capitalization, cliente_id))
+    conn.commit()
+    conn.close()
 
 @app.route('/get_periodos/<int:cliente_id>', methods=['GET'])
 def get_periodos(cliente_id):
@@ -388,7 +441,7 @@ def reportes():
         conn.close()
         
         if operaciones:
-            fecha_de_pago = operaciones[0][7]  # Asumimos que todas las operaciones del periodo tienen la misma fecha de pago
+            fecha_de_pago = operaciones[0][7] 
             monto_final_a_pagar = sum(op[6] for op in operaciones)
 
     return render_template('reportes.html', clients=clients, operaciones=operaciones, 

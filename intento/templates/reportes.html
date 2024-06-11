@@ -26,10 +26,10 @@
         <form method="POST" action="/reportes">
             <div class="input-group">
                 <label for="cliente">Selecciona un cliente:</label>
-                <select id="cliente" name="cliente" class="form-control" required>
+                <select id="cliente" name="cliente" class="form-control" required  >
                     <option value="" disabled selected>Selecciona un cliente</option>
                     {% for client in clients %}
-                    <option value="{{ client[0] }}" {% if client[0] == selected_client %}selected{% endif %}>
+                    <option value="{{ client[0] }}" data-saldo="{{client[12]}}" {% if client[0] == selected_client %}selected{% endif %}>
                         {{ client[1] }} {{ client[2] }}
                     </option>
                     {% endfor %}
@@ -37,12 +37,12 @@
             </div>
             <div class="input-group">
                 <label for="periodo">Selecciona un periodo:</label>
-                <select id="periodo" name="periodo" class="form-control" required>
+                <select id="periodo" name="periodo" class="form-control" required >
                     <option value="" disabled selected>Selecciona un periodo</option>
                 </select>
             </div>
             <div class="boton">
-                <button type="submit" class="btn btn-primary">Obtener Reporte</button>
+                <button type="submit" class="btn btn-primary"  onclick="updateClienteInfo()">Obtener Reporte</button>
             </div>
         </form>
         {% if operaciones %}
@@ -57,22 +57,10 @@
                     <th>Monto Consumido</th>
                     <th>Interés</th>
                     <th>Monto a Pagar</th>
-                    <th>Saldo</th>
                 </tr>
             </thead>
             <tbody>
-                {% set saldo_anterior = 0 %}
                 {% for i, operacion in enumerate(operaciones, start=1) %}
-                    {%  if i==1%}
-                        {% set saldo = operacion[2] - operacion[5] %}
-                        {% set saldo_anterior = saldo %}
-                        
-                    {%  else %}
-                        {% set saldo = saldo_anterior - operacion[5] %}
-                        {% set saldo_anterior = saldo %}
-                        
-                    {% endif %}
-                    
                     <tr>
                         <td>{{ i }}</td>
                         <td>{{ operacion[1] }}</td>
@@ -82,13 +70,15 @@
                         <td>${{ '%.2f' % operacion[5] }}</td>
                         <td>${{ '%.2f' % (operacion[6] - operacion[5]) }}</td>
                         <td>${{ '%.2f' % operacion[6] }}</td>
-                        <td>${{ '%.2f' % saldo }}</td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
         
         <div class="row mt-3">
+            <div class="col-md-6">
+                <p><strong>Saldo actual:</strong> <input type="text" id="saldo" name="saldo" readonly></p>
+            </div>
             <div class="col-md-6">
                 <p><strong>Fecha de Pago:</strong> {{ fecha_de_pago }}</p>
             </div>
@@ -118,6 +108,14 @@
                 }
             });
         });
+
+        function updateClienteInfo() {
+            var clienteSelect = document.getElementById('cliente');
+            var selectedOption = clienteSelect.options[clienteSelect.selectedIndex];
+            var saldo = selectedOption.getAttribute('data-saldo');
+            document.getElementById('saldo').value = saldo;
+            
+        }
     </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>

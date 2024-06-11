@@ -30,7 +30,7 @@
                 <select id="cliente" name="cliente" required onchange="updateClienteInfo()">
                     <option value="" disabled selected>Selecciona un cliente</option>
                     {% for client in clients %}
-                    <option value="{{ client[0] }}" data-rate="{{ client[5] }}" data-rate-type="{{ client[6] }}" data-capitalization="{{ client[7] }}">{{ client[1] }} {{ client[2] }}</option>
+                    <option value="{{ client[0] }}" saldo="{{client[12]}}" data-rate="{{ client[5] }}" data-rate-type="{{ client[6] }}" data-capitalization="{{ client[7] }}">{{ client[1] }} {{ client[2] }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -114,17 +114,13 @@
             var rate = selectedOption.getAttribute('data-rate');
             var rateType = selectedOption.getAttribute('data-rate-type');
             var capitalization = selectedOption.getAttribute('data-capitalization');
-
+            var saldo = selectedOption.getAttribute('saldo');
             document.getElementById('rate').value = rate;
             document.getElementById('rate_type').value = rateType;
             document.getElementById('capitalization').value = capitalization;
+            document.getElementById('saldo').value = saldo;
 
-            var clienteId = clienteSelect.value;
-            fetch('/get_saldo/' + clienteId)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('saldo').value = data.saldo.toFixed(2);
-                });
+            
         }
 
         document.getElementById('operacion-form').addEventListener('submit', function(event) {

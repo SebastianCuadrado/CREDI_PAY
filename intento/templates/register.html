@@ -4,20 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Credipay - Registro</title>
-    <link rel="stylesheet" href="static/styles2.css">
+    <link rel="stylesheet" href="static/stylesregister.css">
 </head>
 <body>
     <div class="container">
-        
         <div class="register-section">
             <h2>Registro</h2>
-          
             <form id="register-form">
                 <div class="input-group">
                     <label for="store-name">Nombre del negocio</label>
                     <input type="text" id="store-name" name="store_name" required>
                 </div>
-                
                 <div class="input-group">
                     <label for="store-type">Tipo de negocio</label>
                     <select id="store-type" name="store_type" required>
@@ -33,11 +30,11 @@
                     </select>
                 </div>
                 <div class="input-group">
-                    <label for="store-name">Nombres</label>
+                    <label for="first-name">Nombres</label>
                     <input type="text" id="first-name" name="first_name" required>
                 </div>
                 <div class="input-group">
-                    <label for="store-name">Apellidos</label>
+                    <label for="last-name">Apellidos</label>
                     <input type="text" id="last-name" name="last_name" required>
                 </div>
                 <div class="input-group">
@@ -52,15 +49,17 @@
                     <button type="button" onclick="enviarFormulario()">Crear Cuenta</button>
                 </div>
                 <div class="boton">
-                    <a href="/login" class="btn" >Volver</a>
-                </div>  
-                
-               
+                    <a href="/login" class="btn">Volver</a>
+                </div>
             </form>
         </div>
+
+        <div class="info-section">
+            <h2>Únete a Credipay</h2>
+            <p>Con Credipay puedes manejar tus créditos de forma sencilla y eficiente. Únete a nosotros y lleva tu negocio al siguiente nivel con nuestras herramientas avanzadas.</p>
+            <img src="static/assets/images/registersimbol.png" alt="Motivational Image">
+        </div>
     </div>
-
-
 
     <script>
         function enviarFormulario() {

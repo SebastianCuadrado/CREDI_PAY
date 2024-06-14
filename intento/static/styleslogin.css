@@ -1,0 +1,115 @@
+body {
+    background-image: url('../static/assets/images/fondo_login.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.section-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.welcome-section {
+    background-color: #56a9a8; /* Azul semi-transparente */
+    color: white;
+    padding: 20px;
+    border-top-left-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    min-width: 400px; /* Para que tenga un tamaño mínimo */
+    height: 60%;
+}
+
+.welcome-section h1 {
+    margin: 0;
+    font-size: 2em;
+}
+.welcome-section img {
+    max-width: 280px;
+    height: auto;
+    margin-top: 20px;
+   
+
+}
+
+
+.login-section {
+    background-color: white;
+    padding: 20px;
+    padding-left: 60px;
+    padding-right: 60px;
+    height: 60%;
+    border-bottom-right-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    flex: 1;
+    min-width: 500px; /* Para que tenga un tamaño mínimo */
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.boton button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #56a9a8;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.boton button:hover {
+    background-color: #3b814dd0;
+}
+
+.new-user {
+    margin-top: 20px;
+}
+
+.new-user h6 {
+    margin: 0;
+}
+
+.boton a {
+    background-color: #498f8e;
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 10px;
+}

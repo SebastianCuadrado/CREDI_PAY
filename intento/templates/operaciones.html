@@ -67,6 +67,16 @@
             <div class="input-group">
                 <button type="submit" class="btn">Registrar</button>
             </div>
+            <div class="input-group">
+                <button type="button" class="btn" id="registrar-cuotas-btn" onclick="showCuotasField()">Registrar a Cuotas</button>
+            </div>
+            <div class="input-group" id="cuotas-group" style="display: none;">
+                <label for="num_cuotas">Número de Cuotas</label>
+                <input type="number" id="num_cuotas" name="num_cuotas" min="1" required>
+            </div>
+            <div class="input-group" id="registrar-cuotas-group" style="display: none;">
+                <button type="submit" class="btn" name="registrar_cuotas">Confirmar Registro a Cuotas</button>
+            </div>
         </form>
     </div>
 
@@ -119,8 +129,6 @@
             document.getElementById('rate_type').value = rateType;
             document.getElementById('capitalization').value = capitalization;
             document.getElementById('saldo').value = saldo;
-
-            
         }
 
         document.getElementById('operacion-form').addEventListener('submit', function(event) {
@@ -158,7 +166,7 @@
         document.getElementById('new_rate_type').addEventListener('change', function() {
             var rateType = this.value;
             var specificRateType = document.getElementById('new_rate_spec');
-            
+
             var options = {
                 nominal: [
                     {value: 'TNM', text: 'TNM (Tasa Nom. Mensual)'},
@@ -169,23 +177,29 @@
                     {value: 'TNA', text: 'TNA (Tasa Nom. Anual)'}
                 ],
                 efectiva: [
-                    {value: 'TEM', text: 'TEM (Tasa Efec. Mensual)'},
-                    {value: 'TEB', text: 'TEB (Tasa Efec. Bimestral)'},
-                    {value: 'TET', text: 'TET (Tasa Efec. Trimestral)'},
-                    {value: 'TEC', text: 'TEC (Tasa Efec. Cuatrimestral)'},
-                    {value: 'TES', text: 'TES (Tasa Efec. Semestral)'},
-                    {value: 'TEA', text: 'TEA (Tasa Efec. Anual)'}
+                    {value: 'TEM', text: 'TEM (Tasa Ef. Mensual)'},
+                    {value: 'TEB', text: 'TEB (Tasa Ef. Bimestral)'},
+                    {value: 'TET', text: 'TET (Tasa Ef. Trimestral)'},
+                    {value: 'TEC', text: 'TEC (Tasa Ef. Cuatrimestral)'},
+                    {value: 'TES', text: 'TES (Tasa Ef. Semestral)'},
+                    {value: 'TEA', text: 'TEA (Tasa Ef. Anual)'}
                 ]
             };
-            
-            specificRateType.innerHTML = '<option value="" disabled selected>Selecciona la especificación de tasa</option>';
+
+            specificRateType.innerHTML = '';
+
             options[rateType].forEach(function(option) {
                 var opt = document.createElement('option');
                 opt.value = option.value;
-                opt.text = option.text;
-                specificRateType.add(opt);
+                opt.textContent = option.text;
+                specificRateType.appendChild(opt);
             });
         });
+
+        function showCuotasField() {
+            document.getElementById('cuotas-group').style.display = 'block';
+            document.getElementById('registrar-cuotas-group').style.display = 'block';
+        }
     </script>
 </body>
 </html>

@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for,flash,sessi
 import sqlite3
 import os
 from datetime import datetime, timedelta
-
+from dateutil.relativedelta import relativedelta
 app = Flask(__name__)
 print("Inicializando la aplicación Flask...")
 app.secret_key = "hola"
@@ -145,6 +145,28 @@ def add_operacion(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     ''', (fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa, monto_pago, payment_date.strftime('%m%y')))
     
+    conn.commit()
+    conn.close()
+    
+def add_operacion_cuotas(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa, capitalization, num_cuotas):
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+    
+    cursor.execute('SELECT payment_date FROM clients WHERE id = ?', (cliente_id,))
+    payment_date_str = cursor.fetchone()[0]
+    payment_date = datetime.strptime(payment_date_str, '%Y-%m-%d')
+    new_payment_date = payment_date + relativedelta(months=num_cuotas)
+    fecha_operacion = datetime.strptime(fecha, '%Y-%m-%d')
+    monto_pago = calcular_monto_pago(float(monto), float(tasa_operacion), tipo_tasa,  capitalization,fecha_operacion, new_payment_date)
+
+    monto_cuota = float(monto_pago) / int(num_cuotas)
+
+    for cuota in range(1, int(num_cuotas) + 1):
+        cursor.execute('''
+            INSERT INTO operaciones (fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipotasa_operacion, montopago, periodo)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (fecha, cliente_id, tipo_operacion, monto_cuota, tasa_operacion, tipo_tasa, monto_cuota, f"{fecha}-{cuota}"))
+
     conn.commit()
     conn.close()
 
@@ -367,8 +389,7 @@ def operaciones():
         return redirect(url_for('login'))
 
     user_id = session['user_id']
-    
-            
+
     if request.method == 'POST':
         fecha = request.form['fecha']
         cliente_id = request.form['cliente']
@@ -376,16 +397,23 @@ def operaciones():
         monto = request.form['monto']
         tasa_operacion = request.form['rate']
         tipo_tasa = request.form['rate_type']
-        capitalization=request.form['capitalization']
+        capitalization = request.form['capitalization']
+
+        if 'num_cuotas' in request.form:
+            num_cuotas = request.form['num_cuotas']
+            add_operacion_cuotas(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa, capitalization, num_cuotas)
+            flash('Operación registrada a cuotas exitosamente.')
+        else:
+            add_operacion(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa, capitalization)
+            flash('Operación registrada exitosamente.')
         
-        add_operacion(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa,capitalization)
         update_cliente(cliente_id, tasa_operacion, tipo_tasa, capitalization)
-        flash('Operación registrada exitosamente.')
         return redirect(url_for('principal'))
 
     clients = get_clients_for_user(user_id)
     fecha_actual = datetime.now().strftime('%Y-%m-%d')
     return render_template('operaciones.html', clients=clients, fecha_actual=fecha_actual)
+
 
 def update_cliente(cliente_id, new_rate, new_rate_type, new_capitalization):
     conn = sqlite3.connect(DATABASE)

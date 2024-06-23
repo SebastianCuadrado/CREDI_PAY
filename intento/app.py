@@ -151,21 +151,26 @@ def add_operacion(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo
 def add_operacion_cuotas(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa, capitalization, num_cuotas):
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
-    
+    num_cuotas = int(num_cuotas)
     cursor.execute('SELECT payment_date FROM clients WHERE id = ?', (cliente_id,))
     payment_date_str = cursor.fetchone()[0]
     payment_date = datetime.strptime(payment_date_str, '%Y-%m-%d')
+    
     new_payment_date = payment_date + relativedelta(months=num_cuotas)
+    
     fecha_operacion = datetime.strptime(fecha, '%Y-%m-%d')
     monto_pago = calcular_monto_pago(float(monto), float(tasa_operacion), tipo_tasa,  capitalization,fecha_operacion, new_payment_date)
 
-    monto_cuota = float(monto_pago) / int(num_cuotas)
+    monto_cuota = float(monto_pago) / num_cuotas
 
-    for cuota in range(1, int(num_cuotas) + 1):
+    for cuota in range(0, int(num_cuotas) ):
+        cuota_payment_date = fecha_operacion + relativedelta(months=cuota)
+        cuota_periodo = cuota_payment_date.strftime('%m%y')
+
         cursor.execute('''
             INSERT INTO operaciones (fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipotasa_operacion, montopago, periodo)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (fecha, cliente_id, tipo_operacion, monto_cuota, tasa_operacion, tipo_tasa, monto_cuota, f"{fecha}-{cuota}"))
+        ''', (cuota_payment_date.strftime('%Y-%m-%d'), cliente_id, tipo_operacion, monto_cuota, tasa_operacion, tipo_tasa, monto_cuota, cuota_periodo))
 
     conn.commit()
     conn.close()

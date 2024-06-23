@@ -72,7 +72,11 @@
             </div>
             <div class="input-group" id="cuotas-group" style="display: none;">
                 <label for="num_cuotas">Número de Cuotas</label>
-                <input type="number" id="num_cuotas" name="num_cuotas" min="1" required>
+                <input type="number" id="num_cuotas" name="num_cuotas" min="1" >
+            </div>
+            <div class="input-group" id="plazo-group" style="display: none;">
+                <label for="plazo">Meses de plazo de gracia:</label>
+                <input type="number" id="plazo" name="plazo" min="0" >
             </div>
             <div class="input-group" id="registrar-cuotas-group" style="display: none;">
                 <button type="submit" class="btn" name="registrar_cuotas">Confirmar Registro a Cuotas</button>
@@ -198,6 +202,7 @@
 
         function showCuotasField() {
             document.getElementById('cuotas-group').style.display = 'block';
+            document.getElementById('plazo-group').style.display = 'block';
             document.getElementById('registrar-cuotas-group').style.display = 'block';
         }
     </script>

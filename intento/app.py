@@ -148,19 +148,21 @@ def add_operacion(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo
     conn.commit()
     conn.close()
     
-def add_operacion_cuotas(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa, capitalization, num_cuotas):
+def add_operacion_cuotas(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa, capitalization, num_cuotas,plazo):
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     num_cuotas = int(num_cuotas)
+    plazo=int(plazo)
     cursor.execute('SELECT payment_date FROM clients WHERE id = ?', (cliente_id,))
     payment_date_str = cursor.fetchone()[0]
     payment_date = datetime.strptime(payment_date_str, '%Y-%m-%d')
     
-    new_payment_date = payment_date + relativedelta(months=num_cuotas)
+    new_payment_date = payment_date + relativedelta(months=num_cuotas) + relativedelta(months=plazo)
     
     fecha_operacion = datetime.strptime(fecha, '%Y-%m-%d')
+    
     monto_pago = calcular_monto_pago(float(monto), float(tasa_operacion), tipo_tasa,  capitalization,fecha_operacion, new_payment_date)
-
+    fecha_operacion= fecha_operacion + relativedelta(months=plazo)
     monto_cuota = float(monto_pago) / num_cuotas
 
     for cuota in range(0, int(num_cuotas) ):
@@ -404,9 +406,10 @@ def operaciones():
         tipo_tasa = request.form['rate_type']
         capitalization = request.form['capitalization']
 
-        if 'num_cuotas' in request.form:
+        if  request.form['num_cuotas']:
             num_cuotas = request.form['num_cuotas']
-            add_operacion_cuotas(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa, capitalization, num_cuotas)
+            plazo = request.form['plazo']
+            add_operacion_cuotas(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa, capitalization, num_cuotas,plazo)
             flash('Operación registrada a cuotas exitosamente.')
         else:
             add_operacion(fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipo_tasa, capitalization)

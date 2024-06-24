@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Problema del Flujo Máximo</title>
+    <title>CREDIPAY</title>
     
     <link rel="stylesheet" href="/static/styles.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -17,28 +17,28 @@
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark  fixed-top">
-            <a class="navbar-brand" href="#">Problema del flujo máximo</a>
+            <a class="navbar-brand" href="#">CREDIPAY</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#definicion">Definición</a>
+                        <a class="nav-link" href="#definicion">¿Qué es Credipay?</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#conocimientos">Conocimientos Previos</a>
+                        <a class="nav-link" href="#conocimientos">Funciones</a>
                     </li>
                    
                     <li class="nav-item">
-                        <a class="nav-link" href="#aplicaciones">Aplicaciones</a>
+                        <a class="nav-link" href="#aplicaciones">Beneficios</a>
                     </li>
                 </ul>
             </div>
         </nav>
             <div class="content">
                 <div class="lema">
-                    <h2>"Optimiza tu camino hacia la eficiencia: Desbloquea el flujo máximo "</h2>
+                    <h2>"Gestiona los créditos de tus clientes , de una manera sencilla"</h2>
                 </div>
                 <div class="boton">
                     <a href="/login" class="btn" >Iniciar</a>
@@ -54,24 +54,23 @@
                  
                 
             <div class="texto-def">
-                <h2 style="  color: rgb(82, 7, 82); ">Definición</h2>
+                <h2 style="  color: rgb(0, 0, 0); ">Tu Aliado Financiero ;) </h2>
                  <br>
-                <h2>Flujo Máximo</h2>
-                <p>Consiste en encontrar la distribución óptima de flujo a través de una red de conexiones con capacidades limitadas, para maximizar la cantidad total de flujo que puede pasar desde una fuente hasta un destino dado.</p>
-                <p>En el problema del flujo máximo, se parte de una red dirigida en la que los nodos representan ubicaciones o puntos de procesamiento, y las aristas representan las rutas por las que el flujo puede circular y tienen una capacidad máxima que limita la cantidad de flujo que puede pasar a través de ella.</p>
-                <h2>Algoritmo de Ford Fulkerson</h2>
-                <p>El algoritmo de Ford-Fulkerson es una técnica fundamental en la teoría de grafos utilizada para abordar problemas de flujo máximo en redes. Este algoritmo, concebido por Lester Ford y Delbert Fulkerson en 1956, se encuentra en el núcleo de diversas aplicaciones.</p>
-                <p>El propósito central del algoritmo Ford-Fulkerson es determinar el valor máximo de flujo (Fmax) que puede ser enviado desde un nodo fuente (s) hasta un nodo destino (t) a lo largo de una red de conexiones, donde cada arco (u, v) posee una capacidad no negativa, representada por c(u, v), que indica la cantidad máxima de flujo que puede atravesar dicho arco sin infringir sus restricciones.</p>
+                <h2>¿Qué es?</h2>
+                <p>CrediPay es tu aliado financiero personalizado, diseñado para facilitar y mejorar tu gestión de pagos y operaciones financieras. Nos especializamos en ofrecer soluciones ágiles y seguras para tus necesidades de crédito y transacciones diarias.</p>
+                <p>Con CrediPay, gestionar tus pagos y transacciones nunca fue tan sencillo. Nuestra plataforma intuitiva te permite realizar operaciones con solo unos pocos clics.</p>
+                <h2>¿Por qué elegir CrediPay?</h2>
+                <p>En CrediPay, creemos en la transparencia, la confianza y la satisfacción del cliente. Nuestro compromiso es proporcionarte una experiencia financiera superior, respaldada por tecnología avanzada y un equipo dedicado.</p>
+                <p>Descubre cómo CrediPay puede hacer que tus transacciones financieras sean más simples y eficientes. Únete a nosotros hoy mismo y experimenta la diferencia.</p>
             </div>
             <div class="fordfulk">
                 <div style="text-align: center;">
-                    <img src="static/assets/images/ford.jpg" alt="Imagen Ford" style="width: 190px; height: auto;">
-                    <p>Lester Ford</p>
+                    <img src="static/assets/images/credi.jpg" alt="Imagen Ford" style="width: 190px; height: auto;">
+                    
                 </div>
                 
                 <div style="text-align: center; margin-top: 20px;">
-                    <img src="static/assets/images/fulk.jpg" alt="Imagen Fulkerson" style="width: 190px; height: auto;">
-                    <p>Delbert Fulkerson</p>
+                    <img src="static/assets/images/pay.jpg" alt="Imagen Fulkerson" style="width: 190px; height: auto;">
                 </div>
             </div>
             
@@ -81,39 +80,30 @@
     <div class="conocimientos">
         <section id="conocimientos">
             <div class="carrusel">
-                <h2>Conocimientos Previos</h2>
+                <h2>Credipay te permite</h2>
                 <button id="anterior" class="botoncarrusel">Anterior</button>
                 <div class="elemento visible">
-                    <p><strong>Grafo o Red:</strong> Conjunto de varios nodos conectados por aristas que salen de un determinado nodo y van hacia otro, cada una estas aristas pueden presentar o no una dirección y una capacidad de flujo.</p>
-                    <img src="static/assets/images/grafo.png" alt="grafo" style="width: 30%; height: auto;">
+                    <p><strong>Gestionar Clientes:</strong> Permite administrar la información detallada de cada cliente, incluyendo datos personales como: nombres completos , dni, numero de telefono,etc.</p>
+                    <img src="static/assets/images/clientes.png" alt="grafo" style="width: 30%; height: auto;">
                 </div>
                 <div class="elemento">
-                    <p><strong>Nodo:</strong> Los nodos, también conocidos como vértices, son los puntos o entidades individuales en el grafo que pueden representar una ubicación, un proceso , etc. En problemas de flujo máximo, los nodos suelen tener un significado específico como la fuente, el destino o los nodos intermedios.
+                    <p><strong>Realizar operaciones</strong> Registra las operaciones que tus clientes realicen tanto como de consumo y pago. Por cada operación se registran: el monto , la tasa de la operación , el interés generado y la fecha de operación.
                         <br>
-                            -Nodo Fuente o Origen: Todas las aristas del nodo apuntan hacia afuera, es el ingreso del flujo.
+                            -Operaciones de consumo a cancelar en fecha de pago: Realiza operaciones de consumo para ser canceladas a la fecha del pago asignado al cliente.
                         <br>
-                            -Nodo Destino o Sumidero: Todas las aristas del nodo apuntan hacia él, es la salida del flujo.
+                            -Operaciones de consumo para ser canceladas a  cuotas: Realiza operaciones en distintas cuotas y puedes asignar plazos de gracia.
                         </p>
-                    <img src="static/assets/images/nodo.jpeg" alt="Nodos" style="width: 30%; height: auto;">
+                    <img src="static/assets/images/operaciones.png" alt="Nodos" style="width: 30%; height: auto;">
                 </div>
                 <div class="elemento">
-                    <p><strong>Aristas:</strong> Las aristas son conexiones entre los nodos en la red. En problemas de flujo máximo, las aristas presentan una capacidad de flujo y una dirección.</p>
-                    <img src="static/assets/images/aristas.png" alt="aristas" style="width: 30%; height: auto;">
+                    <p><strong>Configurar cuentas:</strong> Personaliza y ajusta la configuración de la cuenta del cliente. Credipay te permite asignar una línea de crédito , una tasa del tipo efectivo o nominal y una tasa moratoria.</p>
+                    <img src="static/assets/images/cuenta.png" alt="aristas" style="width: 30%; height: auto;">
                 </div>
                 <div class="elemento">
-                    <p><strong>Dirección:</strong> Las aristas son conexiones entre los nodos en la red. En problemas de flujo máximo, las aristas presentan una capacidad de flujo y una dirección.</p>
-                    <img src="static/assets/images/dirig.gif" alt="aristas" style="width: 30%; height: auto;">
+                    <p><strong>Generar reportes:</strong> Permite generar reportes de los clientes que desee el usuario , se muestra las operaciones realizadas según el periodo seleccionado por el usuario.</p>
+                    <img src="static/assets/images/reportes.png" alt="aristas" style="width: 30%; height: auto;">
                 </div>
-                <div class="elemento">
-                    <p><strong>Matriz:</strong> Una matriz 𝑨 de orden 𝒎 × 𝒏 consiste en el desarrollo de un arreglo rectangular de 𝒎𝒏 números reales o complejos ordenados horizontalmente en 𝒎 filas y verticalmente en 𝒏 columna.
-                    </p>
-                    <img src="static/assets/images/matriz.png" alt="aristas" style="width: 30%; height: auto;">
-                </div>
-                <div class="elemento">
-                    <p><strong>Matriz Booleana:</strong> Una matriz booleana o binaria 𝐵 de tamaño 𝑚 × 𝑛, es una matriz conformada especialmente por entrada de bits, es decir, que los valores que recibe esta matriz 𝐵 están conformados únicamente por 1 y 0.
-                    </p>
-                    <img src="static/assets/images/bool.png" alt="aristas" style="width: 30%; height: auto;">
-                </div>
+                
                 
                 <button id="siguiente"class="botoncarrusel">Siguiente</button>
             </div>
@@ -151,43 +141,42 @@
     <div class="aplicaciones">    
         <section id="aplicaciones">
         <div class="cuadro2">
-            <h2>Aplicaciones</h2>
-            <h6>Los problemas de flujo máximo desempeñan un papel fundamental en la teoría de redes y la optimización combinatoria. Estos problemas abordan situaciones en las que se busca encontrar la cantidad máxima que puede pasar a través de una red con restricciones de capacidad en sus conexiones. Desde la optimización de rutas en redes de transporte hasta la asignación eficiente de recursos en procesos industriales, el flujo máximo se aplica en una amplia gama de campos</h4>
+            <h2>Beneficios de usar Credipay</h2>
             <div class="items">
                 <div class="viajes">
-                    <i class="fa-solid fa-plane fa-beat fa-2xl" style="color: #9b2274;"></i>
+                    <i class="fa-solid fa-check-circle fa-beat fa-2xl" style="color: #1f4db8bc;"></i>
                     <br>
-                    <h7>Viajes: El problema del flujo máximo se aplica en la planificación de rutas de viajes, como el transporte en autobús, avión, taxi o transporte público.</li>
+                    <h7>Fácil de Usar: Nuestra plataforma intuitiva permite gestionar créditos y pagos de manera sencilla y eficiente.</li>
                 </div>
                 <div class="transmisión_datos">
-                    <i class="fa-solid fa-ethernet fa-beat fa-2xl" style="color: #9b2274;"></i>
+                    <i class="fa-solid fa-lock fa-beat fa-2xl" style="color: #1f4db8bc;"></i>
                     <br>
 
-                    <h7>Transmisión de Datos: En las redes de comunicación, la Teoría de Juegos se emplea para optimizar la transmisión de datos, minimizando la congestión y maximizando la eficiencia del ancho de banda.</h7>
+                    <h7>Seguridad: Implementamos altos estándares de seguridad para proteger la información y las transacciones de nuestros usuarios.</h7>
                 </div>
                 <div class="rutas">
-                    <i class="fa-solid fa-route fa-beat fa-2xl" style="color: #9b2274;"></i>
+                    <i class="fa-solid fa-headset fa-beat fa-2xl" style="color: #1f4db8bc;"></i>
                     <br>
 
-                    <h7>Rutas de Suministro: Se utiliza para optimizar la distribución de recursos en la logística y la cadena de suministro, asegurando entregas eficientes y minimizando costos.</h7>
+                    <h7>Soporte 24/7: Nuestro equipo de soporte está disponible en cualquier momento para ayudarte con tus necesidades y consultas.</h7>
                 </div>
                 <div class="inventario">
-                    <i class="fa-solid fa-warehouse fa-beat fa-2xl" style="color: #9b2274;" ></i>
+                    <i class="fa-solid fa-chart-line fa-beat fa-2xl" style="color: #1f4db8bc;" ></i>
                     <br>
 
-                    <h7>Optimización de Inventarios: Determinar la cantidad y la ubicación óptimas de inventario en una cadena de suministro para garantizar una gestión eficiente de inventarios.</h7>
+                    <h7>Reportes Detallados: Genera informes detallados sobre las transacciones y el estado de las cuentas, facilitando la toma de decisiones informadas.</h7>
                 </div> 
                 <div class="hidro">
-                    <i class="fa-solid fa-water fa-beat fa-2xl" style="color: #9b2274;"></i>
+                    <i class="fa-solid fa-sliders-h fa-beat fa-2xl" style="color: #1f4db8bc;"></i>
                     <br>
 
-                    <h7>Estudios Hidrológicos: En el estudio del medio ambiente, el problema del flujo máximo se aplica para comprender cómo fluye el agua en ecosistemas acuáticos, como ríos y lagos. Esto es esencial para evaluar la salud y la sostenibilidad ambiental.</h7>
+                    <h7>Personalización: Ajusta las configuraciones de la cuenta según las necesidades específicas de cada cliente.</h7>
                 </div> 
                 <div class="trafico">
-                    <i class="fa-solid fa-traffic-light fa-beat fa-2xl" style="color: #9b2274;"></i>
+                    <i class="fa-solid fa-eye fa-beat fa-2xl" style="color: #1f4db8bc;"></i>
                     <br>
 
-                    <h7>Gestión de Tráfico: En el ámbito de las redes de computadoras, el problema del flujo máximo se aplica para controlar el flujo de datos y garantizar que los recursos de red, como ancho de banda y enrutadores, se utilicen de manera eficiente. Esto minimiza la congestión y optimiza el rendimiento de la red.</h7>
+                    <h7>Transparencia: Proporcionamos una experiencia financiera clara y sin sorpresas, con toda la información al alcance de tu mano.</h7>
                 </div> 
             </div>
             </section>

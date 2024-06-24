@@ -30,13 +30,21 @@
                 <select id="cliente" name="cliente" required onchange="updateClienteInfo()">
                     <option value="" disabled selected>Selecciona un cliente</option>
                     {% for client in clients %}
-                    <option value="{{ client[0] }}" saldo="{{client[12]}}" data-rate="{{ client[5] }}" data-rate-type="{{ client[6] }}" data-capitalization="{{ client[7] }}">{{ client[1] }} {{ client[2] }}</option>
+                    <option value="{{ client[0] }}" saldo="{{client[12]}}" montopago="{{client[13]}}" fechapago="{{client[9]}}" data-rate="{{ client[5] }}" data-rate-type="{{ client[6] }}" data-capitalization="{{ client[7] }}">{{ client[1] }} {{ client[2] }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="input-group">
                 <label for="saldo">Saldo Actual</label>
                 <input type="text" id="saldo" name="saldo" readonly>
+            </div>
+            <div class="input-group">
+                <label for="fechapago">Fecha de pago:</label>
+                <input type="text" id="fechapago" name="fechapago" readonly>
+            </div>
+            <div class="input-group">
+                <label for="montopago">Monto deuda:</label>
+                <input type="text" id="montopago" name="montopago" readonly>
             </div>
             <div class="input-group">
                 <label for="tipo_operacion">Tipo de Operación</label>
@@ -129,21 +137,41 @@
             var rateType = selectedOption.getAttribute('data-rate-type');
             var capitalization = selectedOption.getAttribute('data-capitalization');
             var saldo = selectedOption.getAttribute('saldo');
+            var fechapago=selectedOption.getAttribute('fechapago');
+            var montopago=selectedOption.getAttribute('montopago');
+
             document.getElementById('rate').value = rate;
             document.getElementById('rate_type').value = rateType;
             document.getElementById('capitalization').value = capitalization;
             document.getElementById('saldo').value = saldo;
+            document.getElementById('fechapago').value = fechapago;
+
+            document.getElementById('montopago').value = montopago;
+
         }
 
         document.getElementById('operacion-form').addEventListener('submit', function(event) {
             var saldo = parseFloat(document.getElementById('saldo').value);
             var monto = parseFloat(document.getElementById('monto').value);
             var tipoOperacion = document.getElementById('tipo_operacion').value;
+            var fechapago=document.getElementById('fechapago').value;
+            var montopago=parseFloat(document.getElementById('montopago').value);
+
+            var fechaActualStr = "{{ fecha_actual }}"; 
+            var fechaActual = new Date(fechaActualStr);
+
+            var fechaPagoDate = new Date(fechapago);
 
             if (tipoOperacion === 'consumo' && monto > saldo) {
                 event.preventDefault();
                 alert('El monto de la operación supera el saldo disponible. No se puede realizar esta operación.');
             }
+            if (fechaPagoDate < fechaActual && montopago > 0) {
+                event.preventDefault();
+                alert('Este cliente no puede realizar operaciones porque mantiene una deuda y se ha superado la fecha de pago.');
+            }
+            
+
         });
 
         function showRateModal() {

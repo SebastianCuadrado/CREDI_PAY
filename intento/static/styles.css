@@ -92,7 +92,7 @@ ul {
 
 /* Estilos para el navbar de Bootstrap */
 .navbar {
-    background-color: rgba(148, 30, 150, 0.438); /* Color de fondo con transparencia */
+    background-color: rgba(31, 79, 109, 0.438); /* Color de fondo con transparencia */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra */
     position: fixed; /* Fijar la barra de navegación en la parte superior */
     top: 0;
@@ -128,7 +128,7 @@ ul {
 }
 
 .content {
-    background-color: rgba(0, 0, 0, 0.33); /* Color de fondo con transparencia */
+    background-color: rgba(0, 0, 0, 0.69); /* Color de fondo con transparencia */
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -158,7 +158,7 @@ ul {
 }
 
 .boton .btn {
-    background-color: #b81f70bc;
+    background-color: #1f4db8bc;
     color: #fff;
     padding: 10px 20px;
     border: none;
@@ -171,7 +171,7 @@ ul {
 
 /* Estilos para el botón al pasar el mouse */
 .boton .btn:hover {
-    background-color: #ff6600;
+    background-color: #19857e;
 }
 .definicion {
     
@@ -232,7 +232,7 @@ text-align: center;
 }
 .elemento.visible {
     display: block;
-    background-color:#00000043;
+    background-color:#0000008b;
     width:70%;
     margin-left: 15%;
     border-radius: 1%;
@@ -240,7 +240,7 @@ text-align: center;
     border: 10%;
 }
 .botoncarrusel {
-    background-color: #b81f70bc;
+    background-color: #1f4db8bc;
     color: #fff;
     padding: 10px 20px;
     border: none;
@@ -251,7 +251,7 @@ text-align: center;
     margin:2%
 }
 .botoncarrusel:hover {
-    background-color: #ff6600;
+    background-color: #19857e;
 }
 .aleatorio {
     

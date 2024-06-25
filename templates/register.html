@@ -65,7 +65,7 @@
         function enviarFormulario() {
             var form = document.getElementById("register-form");
             var formData = new FormData(form);
-
+        
             fetch("/register", {
                 method: "POST",
                 body: formData
@@ -73,25 +73,27 @@
             .then(response => {
                 if (response.redirected) {
                     var redirectedUrl = new URL(response.url);
-                if (redirectedUrl.protocol === "https:") {
-                    window.location.href = response.url; 
+                    if (redirectedUrl.protocol === "https:") {
+                        window.location.href = response.url;
+                    } else {
+                        console.warn("Se recibió una redirección a una URL no segura:", response.url);
+                        // Redirigir de todas formas, aunque no sea segura (comentado)
+                        // window.location.href = response.url;
+                    }
+                } else if (response.ok) {
+                    return response.json();
                 } else {
-                    console.warn("Se recibió una redirección a una URL no segura:", response.url);
-                    
+                    throw new Error("Error en la solicitud");
                 }
-            } else if (response.ok) {
-                return response.json(); 
-            } else {
-                throw new Error("Error en la solicitud");
-            }
-        })
+            })
             .then(data => {
                 console.log(data);
             })
             .catch(error => {
-                console.error("Error:", error);
+                console.error("Error en fetch:", error);
             });
         }
+        
     </script>
 
 </body>

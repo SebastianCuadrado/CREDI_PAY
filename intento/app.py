@@ -9,6 +9,11 @@ app.secret_key = "hola"
 
 DATABASE = 'credi_pay.db'
 
+def get_db_connection():
+    conn = sqlite3.connect(DATABASE)
+    conn.row_factory = sqlite3.Row
+    return conn
+
 def init_db():
     print("Inicializando la base de datos...")
     conn = sqlite3.connect(DATABASE)

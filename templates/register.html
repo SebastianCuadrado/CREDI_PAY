@@ -72,13 +72,19 @@
             })
             .then(response => {
                 if (response.redirected) {
+                    var redirectedUrl = new URL(response.url);
+                if (redirectedUrl.protocol === "https:") {
                     window.location.href = response.url; 
-                } else if (response.ok) {
-                    return response.json(); 
                 } else {
-                    throw new Error("Error en la solicitud");
+                    console.warn("Se recibió una redirección a una URL no segura:", response.url);
+                    
                 }
-            })
+            } else if (response.ok) {
+                return response.json(); 
+            } else {
+                throw new Error("Error en la solicitud");
+            }
+        })
             .then(data => {
                 console.log(data);
             })

@@ -167,7 +167,7 @@ def add_operacion_cuotas(fecha, cliente_id, tipo_operacion, monto, tasa_operacio
     elif tipo_tasa == 'TET':
         tfc= ((1 + float(tasa_operacion)/100)(30 / 90))-1
     elif tipo_tasa == 'TEM':
-        tfc= tasa_operacion
+        tfc= float(tasa_operacion)
     elif tipo_tasa == 'TEC':
         tfc= ((1 + float(tasa_operacion)/100)(30 / 120))-1
     elif tipo_tasa == 'TEB':

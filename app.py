@@ -163,59 +163,59 @@ def add_operacion_cuotas(fecha, cliente_id, tipo_operacion, monto, tasa_operacio
     payment_date = datetime.strptime(payment_date_str, '%Y-%m-%d')
     
     if tipo_tasa == 'TEA':
-        tfc= ((1 + float(tasa_operacion)/100)(30 / 360))-1
+        tfc= ((1 + float(tasa_operacion)/100)**(30 / 360))-1
     elif tipo_tasa == 'TET':
-        tfc= ((1 + float(tasa_operacion)/100)(30 / 90))-1
+        tfc= ((1 + float(tasa_operacion)/100)**(30 / 90))-1
     elif tipo_tasa == 'TEM':
         tfc= float(tasa_operacion)
     elif tipo_tasa == 'TEC':
-        tfc= ((1 + float(tasa_operacion)/100)(30 / 120))-1
+        tfc= ((1 + float(tasa_operacion)/100)**(30 / 120))-1
     elif tipo_tasa == 'TEB':
-        tfc= ((1 + float(tasa_operacion)/100)(30 / 60))-1
+        tfc= ((1 + float(tasa_operacion)/100)**(30 / 60))-1
     elif tipo_tasa == 'TES':
-        tfc= ((1 + float(tasa_operacion)/100)(30 / 180))-1
+        tfc= ((1 + float(tasa_operacion)/100)**(30 / 180))-1
     elif tipo_tasa == 'TNS':
         if capitalization=='mensual':
-            tfc= ((1 + (float(tasa_operacion)/100)/6)(1 ))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/6)**(1 ))-1
         if capitalization=='quincenal':
-            tfc= ((1 + (float(tasa_operacion)/100)/12)(2))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/12)**(2))-1
         if capitalization=='diaria':
-            tfc= ((1 + (float(tasa_operacion)/100)/180)(30))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/180)**(30))-1
     elif tipo_tasa == 'TNM':
         if capitalization=='mensual':
-            tfc= ((1 + (float(tasa_operacion)/100)/1)(1 ))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/1)**(1 ))-1
         if capitalization=='quincenal':
-            tfc= ((1 + (float(tasa_operacion)/100)/2)(2))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/2)**(2))-1
         if capitalization=='diaria':
-            tfc= ((1 + (float(tasa_operacion)/100)/30)(30))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/30)**(30))-1
     elif tipo_tasa == 'TNB':
         if capitalization=='mensual':
-            tfc= ((1 + (float(tasa_operacion)/100)/2)(1 ))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/2)**(1 ))-1
         if capitalization=='quincenal':
-            tfc= ((1 + (float(tasa_operacion)/100)/4)(2))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/4)**(2))-1
         if capitalization=='diaria':
-            tfc= ((1 + (float(tasa_operacion)/100)/60)(30))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/60)**(30))-1
     elif tipo_tasa == 'TNC':
         if capitalization=='mensual':
-            tfc= ((1 + (float(tasa_operacion)/100)/4)(1 ))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/4)**(1 ))-1
         if capitalization=='quincenal':
-            tfc= ((1 + (float(tasa_operacion)/100)/8)(2))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/8)**(2))-1
         if capitalization=='diaria':
-            tfc= ((1 + (float(tasa_operacion)/100)/120)(30))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/120)**(30))-1
     elif tipo_tasa == 'TNT':
         if capitalization=='mensual':
-            tfc= ((1 + (float(tasa_operacion)/100)/3)(1 ))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/3)**(1 ))-1
         if capitalization=='quincenal':
-            tfc= ((1 + (float(tasa_operacion)/100)/6)(2))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/6)**(2))-1
         if capitalization=='diaria':
-            tfc= ((1 + (float(tasa_operacion)/100)/90)(30))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/90)**(30))-1
     elif tipo_tasa == 'TNA':
         if capitalization=='mensual':
-            tfc= ((1 + (float(tasa_operacion)/100)/12)(1 ))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/12)**(1 ))-1
         if capitalization=='quincenal':
-            tfc= ((1 + (float(tasa_operacion)/100)/24)(2))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/24)**(2))-1
         if capitalization=='diaria':
-            tfc= ((1 + (float(tasa_operacion)/100)/360)(30))-1
+            tfc= ((1 + (float(tasa_operacion)/100)/360)**(30))-1
     
     new_payment_date = payment_date + relativedelta(months=num_cuotas -1 ) 
     fecha_operacion = datetime.strptime(fecha, '%Y-%m-%d')

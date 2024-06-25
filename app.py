@@ -162,13 +162,78 @@ def add_operacion_cuotas(fecha, cliente_id, tipo_operacion, monto, tasa_operacio
     payment_date_str = cursor.fetchone()[0]
     payment_date = datetime.strptime(payment_date_str, '%Y-%m-%d')
     
-    new_payment_date = payment_date + relativedelta(months=num_cuotas) + relativedelta(months=plazo)
+    if tipo_tasa == 'TEA':
+        tfc= ((1 + float(tasa_operacion)/100)(30 / 360))-1
+    elif tipo_tasa == 'TET':
+        tfc= ((1 + float(tasa_operacion)/100)(30 / 90))-1
+    elif tipo_tasa == 'TEM':
+        tfc= tasa_operacion
+    elif tipo_tasa == 'TEC':
+        tfc= ((1 + float(tasa_operacion)/100)(30 / 120))-1
+    elif tipo_tasa == 'TEB':
+        tfc= ((1 + float(tasa_operacion)/100)(30 / 60))-1
+    elif tipo_tasa == 'TES':
+        tfc= ((1 + float(tasa_operacion)/100)(30 / 180))-1
+    elif tipo_tasa == 'TNS':
+        if capitalization=='mensual':
+            tfc= ((1 + (float(tasa_operacion)/100)/6)(1 ))-1
+        if capitalization=='quincenal':
+            tfc= ((1 + (float(tasa_operacion)/100)/12)(2))-1
+        if capitalization=='diaria':
+            tfc= ((1 + (float(tasa_operacion)/100)/180)(30))-1
+    elif tipo_tasa == 'TNM':
+        if capitalization=='mensual':
+            tfc= ((1 + (float(tasa_operacion)/100)/1)(1 ))-1
+        if capitalization=='quincenal':
+            tfc= ((1 + (float(tasa_operacion)/100)/2)(2))-1
+        if capitalization=='diaria':
+            tfc= ((1 + (float(tasa_operacion)/100)/30)(30))-1
+    elif tipo_tasa == 'TNB':
+        if capitalization=='mensual':
+            tfc= ((1 + (float(tasa_operacion)/100)/2)(1 ))-1
+        if capitalization=='quincenal':
+            tfc= ((1 + (float(tasa_operacion)/100)/4)(2))-1
+        if capitalization=='diaria':
+            tfc= ((1 + (float(tasa_operacion)/100)/60)(30))-1
+    elif tipo_tasa == 'TNC':
+        if capitalization=='mensual':
+            tfc= ((1 + (float(tasa_operacion)/100)/4)(1 ))-1
+        if capitalization=='quincenal':
+            tfc= ((1 + (float(tasa_operacion)/100)/8)(2))-1
+        if capitalization=='diaria':
+            tfc= ((1 + (float(tasa_operacion)/100)/120)(30))-1
+    elif tipo_tasa == 'TNT':
+        if capitalization=='mensual':
+            tfc= ((1 + (float(tasa_operacion)/100)/3)(1 ))-1
+        if capitalization=='quincenal':
+            tfc= ((1 + (float(tasa_operacion)/100)/6)(2))-1
+        if capitalization=='diaria':
+            tfc= ((1 + (float(tasa_operacion)/100)/90)(30))-1
+    elif tipo_tasa == 'TNA':
+        if capitalization=='mensual':
+            tfc= ((1 + (float(tasa_operacion)/100)/12)(1 ))-1
+        if capitalization=='quincenal':
+            tfc= ((1 + (float(tasa_operacion)/100)/24)(2))-1
+        if capitalization=='diaria':
+            tfc= ((1 + (float(tasa_operacion)/100)/360)(30))-1
     
+    new_payment_date = payment_date + relativedelta(months=num_cuotas -1 ) 
     fecha_operacion = datetime.strptime(fecha, '%Y-%m-%d')
+    montonuevo=calcular_monto_pago(float(monto),float(tasa_operacion),tipo_tasa,capitalization,fecha_operacion,payment_date)
     
-    monto_pago = calcular_monto_pago(float(monto), float(tasa_operacion), tipo_tasa,  capitalization,fecha_operacion, new_payment_date)
+    tfc=float(tfc)
+    print(montonuevo)
+    print(tfc)
     fecha_operacion= fecha_operacion + relativedelta(months=plazo)
-    monto_cuota = float(monto_pago) / num_cuotas
+    num=tfc*((1+tfc)**num_cuotas)
+    print(num)
+    div=((1+tfc)**num_cuotas)-1
+    print(div)
+    q=num/div
+    print(q)
+    monto_cuota = float(montonuevo)*(q)
+    monto_divido=float(monto)/num_cuotas
+
 
     for cuota in range(0, int(num_cuotas) ):
         cuota_payment_date = fecha_operacion + relativedelta(months=cuota)
@@ -177,7 +242,7 @@ def add_operacion_cuotas(fecha, cliente_id, tipo_operacion, monto, tasa_operacio
         cursor.execute('''
             INSERT INTO operaciones (fecha, cliente_id, tipo_operacion, monto, tasa_operacion, tipotasa_operacion, montopago, periodo)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        ''', (cuota_payment_date.strftime('%Y-%m-%d'), cliente_id, tipo_operacion, monto_cuota, tasa_operacion, tipo_tasa, monto_cuota, cuota_periodo))
+        ''', (cuota_payment_date.strftime('%Y-%m-%d'), cliente_id, tipo_operacion, monto_divido, tasa_operacion, tipo_tasa, monto_cuota, cuota_periodo))
 
     conn.commit()
     conn.close()
